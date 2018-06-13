@@ -1,0 +1,20 @@
+[
+{
+  "name": "Floor 1",
+  "type": "Cuboid",
+  "corners" : {
+    "one": {"x": -100, "y": 100, "z": -100},
+    "two": {"x": 100, "y": 750, "z": 400}
+  },
+  "texture" : "brick.png"
+},
+{
+  "name": "Floor 2",
+  "type": "Cuboid",
+  "corners" : {
+    "one": {"x": 100, "y": 200, "z": -100},
+    "two": {"x": 200, "y": 175, "z": 100}
+  },
+  "texture" : "brick.png"
+}
+]
