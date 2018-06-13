@@ -218,6 +218,7 @@ class Player extends MasterEntity{
 
   final float RADIUS = 200;
   float viewHor = 0, viewVer = 0;
+  float speed = 10;
   PVector view;
   Hud hud;
 
@@ -244,25 +245,34 @@ class Player extends MasterEntity{
     viewHor += (mouseX-width/2)*0.1f;//*width*0.1;
     viewVer += (mouseY-height/2)*0.1f;
     setView();
+    vel = PVector.fromAngle(new PVector(view.x, view.z).heading());
     //vel = v.copy();
-
+    PVector frameVel = new PVector(0, 0, 0);
+    PVector tv = new PVector(speed, 0);
     if (keysHold.get(keysName.get("left"))){
-      pos.x -= vel.x;
+      tv = PVector.mult(PVector.fromAngle(vel.heading()-HALF_PI), speed);
+      frameVel.add(new PVector(tv.x, 0, tv.y));
     }
     if (keysHold.get(keysName.get("right"))){
-      pos.x += vel.x;
+      tv = PVector.mult(PVector.fromAngle(vel.heading()+HALF_PI), speed);
+      frameVel.add(new PVector(tv.x, 0, tv.y));
     }
     if (keysHold.get(keysName.get("forward"))){
-      pos.z -= vel.z;
+      tv = PVector.mult(PVector.fromAngle(vel.heading()), speed);
+      frameVel.add(new PVector(tv.x, 0, tv.y));
+      frameVel.add(new PVector(vel.x, 0, vel.y));
     }
     if (keysHold.get(keysName.get("backward"))){
-      pos.z += vel.z;
+      tv = PVector.mult(PVector.fromAngle(vel.heading()-PI), speed);
+      frameVel.add(new PVector(tv.x, 0, tv.y));
     }
+    frameVel.limit(speed);
+    pos.add(frameVel);
     if (keysHold.get(keysName.get("up"))){
-      pos.y -= vel.y;
+      pos.y -= speed;
     }
     if (keysHold.get(keysName.get("down"))){
-      pos.y += vel.y;
+      pos.y += speed;
     }
 
 
@@ -309,14 +319,17 @@ public void setKeys() {
 }
 
 public void keyPressed() {
-  key = Character.toLowerCase(key);
-  if (keysHold.containsKey(key)) keysHold.put(key, true);
-  if (keysPress.containsKey(key)) keysPress.put(key, !keysPress.get(key));
+  char k = Character.toLowerCase(key);
+
+  if (keysHold.containsKey(k)) keysHold.put(k, true);
+  println("Pressed : "+k+" :: "+keysHold.get(k));
+  if (keysPress.containsKey(k)) keysPress.put(k, !keysPress.get(k));
 }
 
 public void keyReleased() {
-  key = Character.toLowerCase(key);
-  if (keysHold.containsKey(key)) keysHold.put(key, false);
+  char k = Character.toLowerCase(key);
+  println("Released: "+k+" :: "+keysHold.get(k));
+  if (keysHold.containsKey(k)) keysHold.put(k, false);
 }
 
 public void spheroid(PVector pos, PVector size) {

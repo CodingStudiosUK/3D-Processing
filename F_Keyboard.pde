@@ -30,12 +30,15 @@ void setKeys() {
 }
 
 void keyPressed() {
-  key = Character.toLowerCase(key);
-  if (keysHold.containsKey(key)) keysHold.put(key, true);
-  if (keysPress.containsKey(key)) keysPress.put(key, !keysPress.get(key));
+  char k = Character.toLowerCase(key);
+
+  if (keysHold.containsKey(k)) keysHold.put(k, true);
+  println("Pressed : "+k+" :: "+keysHold.get(k));
+  if (keysPress.containsKey(k)) keysPress.put(k, !keysPress.get(k));
 }
 
 void keyReleased() {
-  key = Character.toLowerCase(key);
-  if (keysHold.containsKey(key)) keysHold.put(key, false);
+  char k = Character.toLowerCase(key);
+  println("Released: "+k+" :: "+keysHold.get(k));
+  if (keysHold.containsKey(k)) keysHold.put(k, false);
 }

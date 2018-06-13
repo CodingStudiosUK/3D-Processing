@@ -2,6 +2,7 @@ class Player extends MasterEntity{
 
   final float RADIUS = 200;
   float viewHor = 0, viewVer = 0;
+  float speed = 10;
   PVector view;
   Hud hud;
 
@@ -28,25 +29,34 @@ class Player extends MasterEntity{
     viewHor += (mouseX-width/2)*0.1;//*width*0.1;
     viewVer += (mouseY-height/2)*0.1;
     setView();
+    vel = PVector.fromAngle(new PVector(view.x, view.z).heading());
     //vel = v.copy();
-
+    PVector frameVel = new PVector(0, 0, 0);
+    PVector tv = new PVector(speed, 0);
     if (keysHold.get(keysName.get("left"))){
-      pos.x -= vel.x;
+      tv = PVector.mult(PVector.fromAngle(vel.heading()-HALF_PI), speed);
+      frameVel.add(new PVector(tv.x, 0, tv.y));
     }
     if (keysHold.get(keysName.get("right"))){
-      pos.x += vel.x;
+      tv = PVector.mult(PVector.fromAngle(vel.heading()+HALF_PI), speed);
+      frameVel.add(new PVector(tv.x, 0, tv.y));
     }
     if (keysHold.get(keysName.get("forward"))){
-      pos.z -= vel.z;
+      tv = PVector.mult(PVector.fromAngle(vel.heading()), speed);
+      frameVel.add(new PVector(tv.x, 0, tv.y));
+      frameVel.add(new PVector(vel.x, 0, vel.y));
     }
     if (keysHold.get(keysName.get("backward"))){
-      pos.z += vel.z;
+      tv = PVector.mult(PVector.fromAngle(vel.heading()-PI), speed);
+      frameVel.add(new PVector(tv.x, 0, tv.y));
     }
+    frameVel.limit(speed);
+    pos.add(frameVel);
     if (keysHold.get(keysName.get("up"))){
-      pos.y -= vel.y;
+      pos.y -= speed;
     }
     if (keysHold.get(keysName.get("down"))){
-      pos.y += vel.y;
+      pos.y += speed;
     }
 
 
