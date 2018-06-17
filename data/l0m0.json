@@ -3,17 +3,35 @@
   "name": "Floor 1",
   "type": "Cuboid",
   "corners" : {
-    "one": {"x": -100, "y": 100, "z": -100},
-    "two": {"x": 100, "y": 750, "z": 400}
+    "one": {"x": -500, "y": 0, "z": -500},
+    "two": {"x": 500, "y": 100, "z": 500}
   },
   "texture" : "brick.png"
 },
 {
-  "name": "Floor 2",
+  "name": "PlusZ",
   "type": "Cuboid",
   "corners" : {
-    "one": {"x": 100, "y": 200, "z": -100},
-    "two": {"x": 200, "y": 175, "z": 100}
+    "one": {"x": -100, "y": -150, "z": 0},
+    "two": {"x": -95, "y": -145, "z": 200}
+  },
+  "texture" : "brick.png"
+},
+{
+  "name": "PlusX",
+  "type": "Cuboid",
+  "corners" : {
+    "one": {"x": -100, "y": -150, "z": -10},
+    "two": {"x": 100, "y": -120, "z": 10}
+  },
+  "texture" : "brick.png"
+},
+{
+  "name": "PlusY",
+  "type": "Cuboid",
+  "corners" : {
+    "one": {"x": -100, "y": -150, "z": -10},
+    "two": {"x": -90, "y": -300, "z": 30}
   },
   "texture" : "brick.png"
 }

@@ -1,16 +1,15 @@
 import java.awt.Robot;
 import java.awt.AWTException;
 
-final float MAGIC = (height/2.0) / tan(PI*30.0 / 180.0);
-
 ArrayList<MasterObject> level;
 Player player;
+final PVector GRAVITY = new PVector(0, 4);
 
 Robot robot;
 
 void setup() {
-  //size(1280, 720, P3D);
-  fullScreen(P3D);
+  size(1280, 720, P3D);
+  //fullScreen(P3D);
   try {
    robot = new Robot();
  }
@@ -21,7 +20,7 @@ void setup() {
   level = loadLevel("l0m0");
   noCursor();
   setKeys();
-  player = new Player(0,0,0,width,height,0);
+  player = new Player(0,-60,0,40,100,40);
 
   textSize(50);
   textAlign(CENTER, CENTER);
@@ -43,13 +42,16 @@ ArrayList<MasterObject> loadLevel(String filename){
 }
 
 void draw() {
+  player.run();
+
   background(10);
   ambientLight(255, 255, 255, 0, 0, 0);
-  player.run();
-  for (MasterObject mo : level){
+  player.display();
+    for (MasterObject mo : level){
     mo.display();
+    mo.collide(player);
   }
-  //player.display();
+
   debug();
 }
 
@@ -71,10 +73,9 @@ void debug(){
     // fill(255);
     // popMatrix();
   }
-  println();
 }
 
-void mousePressed(){
+/*void mousePressed(){
   level.add(new Cuboid(player.pos.x+player.view.x-10, player.pos.y+player.view.y-10, player.pos.z+player.view.z-10,
     player.pos.x+player.view.x+10, player.pos.y+player.view.y+10, player.pos.z+player.view.z+10));
-}
+}*/

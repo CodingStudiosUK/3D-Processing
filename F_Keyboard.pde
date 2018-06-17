@@ -33,12 +33,10 @@ void keyPressed() {
   char k = Character.toLowerCase(key);
 
   if (keysHold.containsKey(k)) keysHold.put(k, true);
-  println("Pressed : "+k+" :: "+keysHold.get(k));
   if (keysPress.containsKey(k)) keysPress.put(k, !keysPress.get(k));
 }
 
 void keyReleased() {
   char k = Character.toLowerCase(key);
-  println("Released: "+k+" :: "+keysHold.get(k));
   if (keysHold.containsKey(k)) keysHold.put(k, false);
 }
