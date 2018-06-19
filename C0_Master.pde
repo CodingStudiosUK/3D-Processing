@@ -1,3 +1,11 @@
+final int TOUCH_NOT = -1,
+  TOUCH_LEFT = 0,
+  TOUCH_RIGHT = 1,
+  TOUCH_FRONT = 2,
+  TOUCH_BACK = 3,
+  TOUCH_TOP = 4,
+  TOUCH_BOTTOM = 5;
+
 abstract class MasterObject{
 
   PVector pos, size;
@@ -50,12 +58,27 @@ abstract class MasterObject{
   }
 
   int isTouching(MasterObject mo){
-    if(mo.getRight() > getLeft() && mo.getLeft() < getRight() //Other object is above
+    if(mo != null && mo != this
+    && mo.getRight() > getLeft() && mo.getLeft() < getRight() //Other object is above
     && mo.getFront() < getBack() && mo.getBack() > getFront()
-    && mo.getBottom() > getTop()){
-      return 4;
+    && mo.getBottom() > getTop() && mo.getTop() < getBottom()){
+      if(mo.pos.y < getTop()){
+        return TOUCH_TOP;
+      }else if(mo.pos.y > getBottom()){
+        return TOUCH_BOTTOM;
+      }else {
+        float angO = atan2(mo.pos.z-pos.z, mo.pos.x-pos.x);
+        float angTR = atan2(getFront()-pos.z, getRight()-pos.x);
+        float angBR = atan2(getBack()-pos.z, getRight()-pos.x);
+        float angTL = atan2(getFront()-pos.z, getLeft()-pos.x);
+        float angBL = atan2(getBack()-pos.z, getLeft()-pos.x);
+        if (angO >= angTL && angO <= angTR) return TOUCH_FRONT;
+        else if (angO >= angBR && angO <= angBL) return TOUCH_BACK;
+        else if (angO >= angTR && angO <= angBR) return TOUCH_RIGHT;
+        else return TOUCH_LEFT;
+      }
     }
-    return -1;
+    return TOUCH_NOT;
   }
 
 
@@ -72,6 +95,7 @@ abstract class MasterGeometry extends MasterObject{
 
   void collide(MasterObject mo){
     int x = isTouching(mo);
+    //println(x);
     if(mo instanceof Player){
       ((Player)mo).collideWith(x, this);
     }
@@ -82,6 +106,8 @@ abstract class MasterGeometry extends MasterObject{
 abstract class MasterEntity extends MasterObject{
 
   PVector vel, dir;
+  boolean ground = true;
+
 
   MasterEntity(float x1, float y1, float z1, float x2, float y2, float z2){
     super(x1, y1, z1, x2, y2, z2, CENTER);

@@ -1,15 +1,33 @@
 import java.awt.Robot;
 import java.awt.AWTException;
 
+import java.io.*;
+import java.net.*;
+
+class TCPClient {
+ public static void main(String argv[]) throws Exception {
+  
+ }
+}
+
+final boolean FULLSCREEN = true;
+
 ArrayList<MasterObject> level;
 Player player;
-final PVector GRAVITY = new PVector(0, 4);
+final PVector GRAVITY = new PVector(0, 8);
 
 Robot robot;
 
+void settings(){
+  if (FULLSCREEN) {
+    fullScreen(P3D);
+  }
+  else {
+    size(1280,600,P3D);
+  }
+}
+
 void setup() {
-  size(1280, 720, P3D);
-  //fullScreen(P3D);
   try {
    robot = new Robot();
  }
@@ -20,10 +38,11 @@ void setup() {
   level = loadLevel("l0m0");
   noCursor();
   setKeys();
-  player = new Player(0,-60,0,40,100,40);
+  player = new Player(0,-60,0,40,80,40);
 
   textSize(50);
   textAlign(CENTER, CENTER);
+
 }
 
 ArrayList<MasterObject> loadLevel(String filename){
@@ -42,6 +61,7 @@ ArrayList<MasterObject> loadLevel(String filename){
 }
 
 void draw() {
+  frustum(-10, 10, -7, 7, 10, 10000);
   player.run();
 
   background(10);
@@ -53,6 +73,7 @@ void draw() {
   }
 
   debug();
+  //println("----------------");
 }
 
 void debug(){
@@ -74,6 +95,7 @@ void debug(){
     // popMatrix();
   }
 }
+
 
 /*void mousePressed(){
   level.add(new Cuboid(player.pos.x+player.view.x-10, player.pos.y+player.view.y-10, player.pos.z+player.view.z-10,

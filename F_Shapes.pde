@@ -7,7 +7,7 @@ void spheroid(PVector pos, PVector size) {
 
 void cuboid(PVector pos, PVector size) {
   pushMatrix();
-  translate(pos.x, pos.y, pos.z+50); ////hmmmmmmmmmmm
+  translate(pos.x, pos.y, pos.z); ////hmmmmmmmmmmm
   box(size.x, size.y, size.z);
   popMatrix();
 }

@@ -1,32 +1,82 @@
 class Player extends MasterEntity{
 
+  final float JUMP_VEL = 15;
+
   final float MAX_SPEED = 10;//TODO:temp
-  final float ACC = 1.6;
-  final float INITIAL_SPEED = 0.5;
+  final float ACC = 0.01, DECC = 0.3;
+  final float INITIAL_SPEED = 1.5;
   Camera cam;
+  Socket socket;
 
   Player(float x1, float y1, float z1, float x2, float y2, float z2){
     super(x1, y1, z1, x2, y2, z2);
     vel = new PVector(0, 0, 0);
     dir = new PVector(0, 90);
 
-    cam = new Camera(pos);
+    cam = new Camera();
+    socket = new Socket("10.56.101.108", 6389);
   }
 
+  /*void moveRP(){
+    // Jumping.
+    if (keysHold.get(keysName.get("jump")) && ground) {
+      vel.y = JUMP_VEL;
+      ground = false;
+    }
+    // Running, or decelerating.
+    int moveDir = getMoveDirect();
+    if (moveDir == -23){
+      speed -= 0.25;
+    } else {
+      speed += 0.25;
+    }
+    speed = constrain(speed,0,10);
+
+
+
+    // Add gravity, and constrain the velocity.
+    vel.add(GRAVITY);
+    vel.conX(-5, 5);
+    vel.conY(gameFile.powerUse[0]?-9:-7, 10);
+    // Add to position, and constrain it within the screen.
+    pos.add(vel);
+  }*/
+
   void move(){
-
-
     if (keysHold.get(keysName.get("up"))){
-      pos.y -= MAX_SPEED*0.8;
+      pos.y -= MAX_SPEED*0.4;
+      pos.sub(GRAVITY);
     }
     if (keysHold.get(keysName.get("down"))){
-      pos.y += MAX_SPEED*0.8;
+      pos.y += MAX_SPEED*0.4;
+      pos.add(GRAVITY);
+    }
+    if(keysPress.get(keysName.get("jump"))){
+      vel.y -= JUMP_VEL;
     }
 
+    int moveDir = getMoveDirect();
+    if (moveDir==-23){
+      vel.mult(DECC);
+      return;
+    }
+    float move = degrees(new PVector(cam.center.x, cam.center.z).heading())+180+moveDir;
+    move = (360+move)%360;
+
+    PVector moveVel = PVector.mult(PVector.fromAngle(radians(move-180)), constrain(vel.mag(), INITIAL_SPEED, MAX_SPEED));
+    moveVel.add(ACC, 0, ACC);
+    vel.add(moveVel.x, 0, moveVel.y);
+    vel.limit(MAX_SPEED);
+    pos.add(vel);
+    ground = false;
+  }
+
+  int getMoveDirect(){
     boolean w = keysHold.get(keysName.get("forward"));
     boolean s = keysHold.get(keysName.get("backward"));
     boolean a = keysHold.get(keysName.get("left"));
     boolean d = keysHold.get(keysName.get("right"));
+
     int x, z;
     if (w^s){
       if (w){
@@ -49,45 +99,42 @@ class Player extends MasterEntity{
     }
 
     if (x==-23&&z==-23){
-      vel.setMag(0);
-      return;
+      return -23;
     }
-    float move = degrees(new PVector(cam.center.x, cam.center.z).heading())+180;
+
     if (z == -23){
-      move += x;
+      return x;
     } else if (x==-23){
-      move += z;
+      return z;
     } else {
-      move += lerp(x,w&a?-z+180:z,0.5);
+      return int(lerp(x,w&a?180-z:z,0.5));
     }
-    move = (360+move)%360;
-
-    vel = PVector.mult(PVector.fromAngle(radians(move-180)), constrain(vel.mag(), INITIAL_SPEED, MAX_SPEED));
-    vel.mult(ACC);
-    vel.limit(MAX_SPEED);
-    pos.add(vel.x, 0, vel.y);
-
-
-
-
   }
 
   void collideWith(int x, MasterObject mo){
-    println(x);
+    if(x > -1 && x != 4) println(x);
     switch(x){
-      case 5:
+      case TOUCH_BOTTOM:
+        pos.y = mo.getBottom()+size.y/2;
         break;
-      case 4:
-        pos.sub(GRAVITY);
-      case 3:
+      case TOUCH_TOP:
+        pos.y = mo.getTop()-size.y/2;
+        ground = true;
         break;
-      case 2:
+      case TOUCH_BACK:
+        pos.z = mo.getBack()+size.z/2;
         break;
-      case 1:
+      case TOUCH_FRONT:
+        pos.z = mo.getFront()-size.z/2;
         break;
-      case 0:
+      case TOUCH_RIGHT:
+        pos.x = mo.getRight()+size.x/2;
         break;
-      case -1:
+      case TOUCH_LEFT:
+        pos.x = mo.getLeft()-size.x/2;
+        break;
+      case TOUCH_NOT:
+      default:
         break;
     }
   }
@@ -95,7 +142,7 @@ class Player extends MasterEntity{
   void run(){
 
     dir.x += (mouseX-width/2)*0.3;
-    dir.y += (mouseY-height/2)*0.3;
+    dir.y += (mouseY-height/2)*0.3*10/7;
     dir.y = constrain(dir.y, -89, 89);
 
     robot.mouseMove(displayWidth/2, displayHeight/2);
@@ -104,6 +151,22 @@ class Player extends MasterEntity{
 
     move();
     pos.add(GRAVITY);
+  }
+
+  void coms(){
+    try{
+    String toSend;
+    String received;
+
+    DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+    BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    toSend = pos.x+":"+pos.y+","+pos.z;//inFromUser.readLine();
+    outToServer.writeBytes(toSend + '\n');
+    received = inFromServer.readLine();
+    println("FROM SERVER: " + received);
+  }catch(IOException e){
+    e.printStackTrace();
+  }
   }
 
   // void hud(){
@@ -126,29 +189,29 @@ class Player extends MasterEntity{
     cam.display();
   }
 
-}
+
 
  class Camera{
 
    final float RADIUS = 1000; // How far away the camera center is.
-   PVector eye, center;
+   PVector center;
 
-   Camera(PVector pos){
-     eye = pos;
+   Camera(){
      changeDir(0, 90);
    }
 
    void changeDir(float angRight, float angDown){
-     float x = cos(radians(angRight))*RADIUS;
-     float z = sin(radians(angRight))*RADIUS/*+RADIUS/2*/;
-     float y = tan(radians(angDown))*RADIUS;
+     float x = cos(radians(angRight));
+     float z = sin(radians(angRight));
+     float y = tan(radians(angDown));
      center = new PVector(x, y, z);
-     //center.setMag(RADIUS);
+     center.mult(RADIUS);
    }
 
-   void display(){
-    //camera(pos.x, pos.y, MAGIC+pos.z, pos.x+view.x, pos.y+view.y, pos.z+view.z, 0, 1, 0);
-    camera(eye.x, eye.y, eye.z, eye.x+center.x, eye.y+center.y, eye.z+center.z, 0, 1, 0);
-  }
+    void display(){
+     //camera(pos.x, pos.y, MAGIC+pos.z, pos.x+view.x, pos.y+view.y, pos.z+view.z, 0, 1, 0);
+      camera(pos.x, getTop()+10, pos.z, pos.x+center.x, pos.y+center.y, pos.z+center.z, 0, 1, 0);
+    }
 
+  }
 }

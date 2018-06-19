@@ -9,11 +9,38 @@
   "texture" : "brick.png"
 },
 {
+  "name": "Box 1",
+  "type": "Cuboid",
+  "corners" : {
+    "one": {"x": 200, "y": -200, "z": 200},
+    "two": {"x": 300, "y": 0, "z": 300}
+  },
+  "texture" : "brick.png"
+},
+{
+  "name": "Box 2",
+  "type": "Cuboid",
+  "corners" : {
+    "one": {"x": -50, "y": -20, "z": -200},
+    "two": {"x": 50, "y": 0, "z": -300}
+  },
+  "texture" : "brick.png"
+},
+{
+  "name": "Box 2",
+  "type": "Cuboid",
+  "corners" : {
+    "one": {"x": -50, "y": -40, "z": -200},
+    "two": {"x": -100, "y": 0, "z": -300}
+  },
+  "texture" : "brick.png"
+},
+{
   "name": "PlusZ",
   "type": "Cuboid",
   "corners" : {
     "one": {"x": -100, "y": -150, "z": 0},
-    "two": {"x": -95, "y": -145, "z": 200}
+    "two": {"x": -95, "y": -145, "z": 1500}
   },
   "texture" : "brick.png"
 },
@@ -30,7 +57,7 @@
   "name": "PlusY",
   "type": "Cuboid",
   "corners" : {
-    "one": {"x": -100, "y": -150, "z": -10},
+    "one": {"x": -100, "y": -50, "z": -10},
     "two": {"x": -90, "y": -300, "z": 30}
   },
   "texture" : "brick.png"

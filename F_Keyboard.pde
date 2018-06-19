@@ -13,6 +13,7 @@ void setKeys() {
   keysName.put("rotright", 'l');
   keysName.put("rotup", 'i');
   keysName.put("rotdown", 'k');
+  keysName.put("jump", ' ');
 
   keysName.put("debug", 'p');
 
@@ -27,6 +28,7 @@ void setKeys() {
   keysHold.put(keysName.get("rotup"), false);
   keysHold.put(keysName.get("rotdown"), false);
   keysPress.put(keysName.get("debug"), true);
+  keysPress.put(keysName.get("jump"), false);
 }
 
 void keyPressed() {
