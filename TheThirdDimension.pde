@@ -1,16 +1,17 @@
 import java.awt.Robot;
 import java.awt.AWTException;
-
-import java.io.*;
-import java.net.*;
+import hypermedia.net.*;
 
 final boolean FULLSCREEN = true;
 
 ArrayList<MasterObject> level;
 Player player;
+HashMap<String, PlayerOther> players = new HashMap<String, PlayerOther>();
 final PVector GRAVITY = new PVector(0, 8);
 
 Robot robot;
+
+UDP udp;
 
 void settings(){
   if (FULLSCREEN) {
@@ -37,6 +38,8 @@ void setup() {
   textSize(50);
   textAlign(CENTER, CENTER);
 
+  udp = new UDP(this,PORT);
+  udp.listen(true);
 }
 
 ArrayList<MasterObject> loadLevel(String filename){
@@ -57,13 +60,18 @@ ArrayList<MasterObject> loadLevel(String filename){
 void draw() {
   frustum(-10, 10, -7, 7, 10, 10000);
   player.run();
+  for (MasterObject mo : level){
+    mo.collide(player);
+  }
 
   background(10);
   ambientLight(255, 255, 255, 0, 0, 0);
   player.display();
-    for (MasterObject mo : level){
+  for (MasterObject mo : level){
     mo.display();
-    mo.collide(player);
+  }
+  for(Player p : players.values()){
+    p.display();
   }
 
   debug();

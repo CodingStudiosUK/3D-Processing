@@ -8,6 +8,7 @@ class Cuboid extends MasterGeometry{
   }
 
   void display(){
+    fill(0,200,0);
     cuboid(pos,size);
   }
 

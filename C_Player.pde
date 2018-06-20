@@ -6,7 +6,6 @@ class Player extends MasterEntity{
   final float ACC = 0.01, DECC = 0.3;
   final float INITIAL_SPEED = 1.5;
   Camera cam;
-  Socket socket;
 
   Player(float x1, float y1, float z1, float x2, float y2, float z2){
     super(x1, y1, z1, x2, y2, z2);
@@ -14,13 +13,6 @@ class Player extends MasterEntity{
     dir = new PVector(0, 90);
 
     cam = new Camera();
-    try {
-      socket = new Socket("10.56.101.108", 6489);
-    } catch (UnknownHostException e){
-      e.printStackTrace();
-    } catch (IOException e){
-      e.printStackTrace();
-    }
   }
 
   /*void moveRP(){
@@ -157,23 +149,6 @@ class Player extends MasterEntity{
 
     move();
     pos.add(GRAVITY);
-    coms();
-  }
-
-  void coms(){
-    try{
-    String toSend;
-    String received;
-
-    DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());
-    BufferedReader inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-    toSend = pos.x+":"+pos.y+","+pos.z;//inFromUser.readLine();
-    outToServer.writeBytes(toSend + '\n');
-    received = inFromServer.readLine();
-    println("FROM SERVER: " + received);
-  }catch(IOException e){
-    e.printStackTrace();
-  }
   }
 
   // void hud(){
@@ -221,4 +196,27 @@ class Player extends MasterEntity{
     }
 
   }
+}
+
+class PlayerOther extends Player{
+
+  PlayerOther(String d){
+    super(0, 0, 0, 40, 140, 40);
+    updatePos(d);
+  }
+
+  void updatePos(String d){
+    String[] vals = d.split(",");
+    float[] p = new float[3];
+    for(int i = 0; i < d.length(); i++){
+      p[i] = Float.parseFloat(vals[i]);
+    }
+    pos.set(p[0], p[1], p[2]);
+  }
+
+  void display(){
+    fill(0,0,200);
+    cuboid(pos,size);
+  }
+
 }
