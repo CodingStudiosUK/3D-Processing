@@ -1,10 +1,11 @@
 class Player extends MasterEntity{
 
-  final float JUMP_VEL = 15;
+  final float JUMP_VEL = GRAVITY.y*2;
 
-  final float MAX_SPEED = 10;//TODO:temp
-  final float ACC = 0.01, DECC = 0.3;
-  final float INITIAL_SPEED = 1.5;
+  final float MAX_SPEED = 8;//TODO:temp
+  final float ACC = 0.002, DECC = 0.6;
+  final float INITIAL_SPEED = 0.4;
+  float jumpSpeed = 0;
   Camera cam;
 
   Player(float x1, float y1, float z1, float x2, float y2, float z2){
@@ -18,7 +19,7 @@ class Player extends MasterEntity{
   /*void moveRP(){
     // Jumping.
     if (keysHold.get(keysName.get("jump")) && ground) {
-      vel.y = JUMP_VEL;
+      vel.y = -JUMP_VEL;
       ground = false;
     }
     // Running, or decelerating.
@@ -30,17 +31,20 @@ class Player extends MasterEntity{
     }
     speed = constrain(speed,0,10);
 
+    float move = (degrees(new PVector(cam.center.x, cam.center.z).heading())+540+moveDir)%360;
+    PVector moveVel = new PVector(speed,0).rotate(radians(move));
 
+    vel.x = moveVel.x;
+    vel.z = moveVel.y;
 
-    // Add gravity, and constrain the velocity.
     vel.add(GRAVITY);
-    vel.conX(-5, 5);
-    vel.conY(gameFile.powerUse[0]?-9:-7, 10);
-    // Add to position, and constrain it within the screen.
+    vel.y = constrain(vel.y,-JUMP_VEL,JUMP_VEL);
+
     pos.add(vel);
   }*/
 
   void move(){
+
     if (keysHold.get(keysName.get("up"))){
       pos.y -= MAX_SPEED*0.4;
       pos.sub(GRAVITY);
@@ -49,13 +53,19 @@ class Player extends MasterEntity{
       pos.y += MAX_SPEED*0.4;
       pos.add(GRAVITY);
     }
-    if(keysPress.get(keysName.get("jump"))){
-      vel.y -= JUMP_VEL;
+    if(keysHold.get(keysName.get("jump")) && ground == true){
+      jumpSpeed = JUMP_VEL;
+      ground = false;
+
     }
+    pos.y -= jumpSpeed;
+    jumpSpeed = constrain(jumpSpeed-DECC, 0, JUMP_VEL);
+    println(jumpSpeed);
+
 
     int moveDir = getMoveDirect();
     if (moveDir==-23){
-      vel.mult(DECC);
+      vel.mult(0);
       return;
     }
     float move = degrees(new PVector(cam.center.x, cam.center.z).heading())+180+moveDir;
@@ -65,6 +75,7 @@ class Player extends MasterEntity{
     moveVel.add(ACC, 0, ACC);
     vel.add(moveVel.x, 0, moveVel.y);
     vel.limit(MAX_SPEED);
+
     pos.add(vel);
     ground = false;
   }

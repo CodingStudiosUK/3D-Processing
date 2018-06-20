@@ -28,6 +28,6 @@ class Player{
   
   void display(){
     fill(col);
-    ellipse(map(pos.x, -600, 600, 0, width), map(pos.z, -600, 600, 0, height), 20, 20);
+    ellipse(map(pos.x, -1000, 1000, 0, width), map(pos.z, -1000, 1000, 0, height), 20, 20);
   }
 }

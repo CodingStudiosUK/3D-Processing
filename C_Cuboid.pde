@@ -5,12 +5,11 @@ class Cuboid extends MasterGeometry{
   }
 
   void run(){
-    pos.y += random(5);
   }
 
   void display(){
-    fill(255, 5);
-    stroke(255);
+    fill(255, 2);
+    stroke(250);
     cuboid(pos,size);
   }
 

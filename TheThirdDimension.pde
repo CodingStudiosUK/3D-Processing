@@ -7,7 +7,7 @@ final boolean FULLSCREEN = true;
 ArrayList<MasterObject> level;
 Player player;
 HashMap<String, PlayerOther> players = new HashMap<String, PlayerOther>();
-final PVector GRAVITY = new PVector(0, 8);
+final PVector GRAVITY = new PVector(0, 10);
 
 Robot robot;
 
@@ -18,7 +18,7 @@ void settings(){
     fullScreen(P3D);
   }
   else {
-    size(1280,600,P3D);
+    size(800,600,P3D);
   }
 }
 
@@ -40,7 +40,7 @@ void setup() {
 
   udp = new UDP(this,PORT);
   udp.listen(true);
-  surface.setLocation(displayWidth/2-width/2, displayHeight/2-height/2);
+  //surface.setLocation(displayWidth/2-width/2, displayHeight/2-height/2);
 }
 
 ArrayList<MasterObject> loadLevel(String filename){

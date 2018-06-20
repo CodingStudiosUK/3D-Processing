@@ -16,7 +16,7 @@ void setup(){
 void draw(){
   background(0);
   for(Player p : players.values()){
-    println(p.id);
+    //println(p.id);
     p.display();
   }
   send();

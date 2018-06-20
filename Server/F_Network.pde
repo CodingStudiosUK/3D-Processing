@@ -13,6 +13,7 @@ void send() {
 
 void receive( byte[] _data, String ip, int port ) {
   String data = new String(_data);
+  println(data);
   if (players.containsKey(ip)) {
     players.get(ip).updatePos(data);
   } else {

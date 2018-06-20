@@ -29,7 +29,7 @@ void setKeys() {
   keysHold.put(keysName.get("rotup"), false);
   keysHold.put(keysName.get("rotdown"), false);
   keysPress.put(keysName.get("debug"), true);
-  keysPress.put(keysName.get("jump"), false);
+  keysHold.put(keysName.get("jump"), false);
   keysPress.put(keysName.get("mouseLock"), true);
 }
 
