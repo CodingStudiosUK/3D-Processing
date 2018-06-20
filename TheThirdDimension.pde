@@ -40,6 +40,7 @@ void setup() {
 
   udp = new UDP(this,PORT);
   udp.listen(true);
+  surface.setLocation(displayWidth/2-width/2, displayHeight/2-height/2);
 }
 
 ArrayList<MasterObject> loadLevel(String filename){
@@ -68,6 +69,7 @@ void draw() {
   ambientLight(255, 255, 255, 0, 0, 0);
   player.display();
   for (MasterObject mo : level){
+    mo.run();
     mo.display();
   }
   for(Player p : players.values()){

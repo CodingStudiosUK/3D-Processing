@@ -7,13 +7,12 @@ void send() {
     data = data.substring(0, data.length()-1);
   }
   for (String ip : players.keySet()) {
-    udp.send(data, ip, 2324);
+    udp.send(data.replace(ip, "you"), ip, 2324);
   }
 }
 
 void receive( byte[] _data, String ip, int port ) {
   String data = new String(_data);
-  println(data);
   if (players.containsKey(ip)) {
     players.get(ip).updatePos(data);
   } else {

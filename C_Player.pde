@@ -139,16 +139,21 @@ class Player extends MasterEntity{
 
   void run(){
 
-    dir.x += (mouseX-width/2)*0.3;
-    dir.y += (mouseY-height/2)*0.3*10/7;
-    dir.y = constrain(dir.y, -89, 89);
 
-    robot.mouseMove(displayWidth/2, displayHeight/2);
+
+    if(keysPress.get(keysName.get("mouseLock"))){
+      dir.x += (mouseX-width/2)*0.3;
+      dir.y += (mouseY-height/2)*0.3*10/7;
+      dir.y = constrain(dir.y, -89, 89);
+      robot.mouseMove(displayWidth/2, displayHeight/2);
+    }
 
     cam.changeDir(dir.x, dir.y);
 
     move();
     pos.add(GRAVITY);
+    send(String.valueOf(pos));
+    //sendNEW(pos);
   }
 
   // void hud(){
@@ -207,11 +212,16 @@ class PlayerOther extends Player{
 
   void updatePos(String d){
     String[] vals = d.split(",");
+    for(int i = 0; i < vals.length; i++){
+      vals[i] = vals[i].replace("[", "").replace(" ", "").replace("]", "");
+    }
     float[] p = new float[3];
-    for(int i = 0; i < d.length(); i++){
+    for(int i = 0; i < vals.length; i++){
       p[i] = Float.parseFloat(vals[i]);
     }
-    pos.set(p[0], p[1], p[2]);
+    if(dist(pos.x, pos.y, pos.z, p[0], p[1], p[2]) > 50){
+      pos.set(p[0], p[1], p[2]);
+    }
   }
 
   void display(){

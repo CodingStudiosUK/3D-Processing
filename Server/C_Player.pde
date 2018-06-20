@@ -12,11 +12,11 @@ class Player{
   
   void updatePos(String d){
     String[] vals = d.split(",");
-    for(String v : vals){
-      v = v.replace("[", "");
+    for(int i = 0; i < vals.length; i++){
+      vals[i] = vals[i].replace("[", "").replace(" ", "").replace("]", "");
     }
     float[] p = new float[3];
-    for(int i = 0; i < d.length(); i++){
+    for(int i = 0; i < vals.length; i++){
       p[i] = Float.parseFloat(vals[i]);
     }
     pos.set(p[0], p[1], p[2]);
