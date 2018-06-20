@@ -4,12 +4,6 @@ import java.awt.AWTException;
 import java.io.*;
 import java.net.*;
 
-class TCPClient {
- public static void main(String argv[]) throws Exception {
-  
- }
-}
-
 final boolean FULLSCREEN = true;
 
 ArrayList<MasterObject> level;

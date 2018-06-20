@@ -14,7 +14,13 @@ class Player extends MasterEntity{
     dir = new PVector(0, 90);
 
     cam = new Camera();
-    socket = new Socket("10.56.101.108", 6389);
+    try {
+      socket = new Socket("10.56.101.108", 6489);
+    } catch (UnknownHostException e){
+      e.printStackTrace();
+    } catch (IOException e){
+      e.printStackTrace();
+    }
   }
 
   /*void moveRP(){
@@ -151,6 +157,7 @@ class Player extends MasterEntity{
 
     move();
     pos.add(GRAVITY);
+    coms();
   }
 
   void coms(){
@@ -158,8 +165,8 @@ class Player extends MasterEntity{
     String toSend;
     String received;
 
-    DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-    BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());
+    BufferedReader inFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     toSend = pos.x+":"+pos.y+","+pos.z;//inFromUser.readLine();
     outToServer.writeBytes(toSend + '\n');
     received = inFromServer.readLine();
