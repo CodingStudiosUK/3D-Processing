@@ -11,9 +11,9 @@ final int PLAYER_EYE_OFFSET = 10;
 ArrayList<MasterObject> level;
 Player player;
 HashMap<String, PlayerOther> players = new HashMap<String, PlayerOther>();
-final PVector GRAVITY = new PVector(0, 10);
 
 Robot robot;
+PhysicsThread physics = new PhysicsThread();
 
 UDP udp;
 
@@ -43,8 +43,12 @@ void setup() {
   textAlign(CENTER, CENTER);
 
   udp = new UDP(this,REC_PORT);
+  udp.log(false);
   udp.listen(true);
   //surface.setLocation(displayWidth/2-width/2, displayHeight/2-height/2);
+
+  physics.start();
+  frameRate(120);
 }
 
 ArrayList<MasterObject> loadLevel(String filename){
@@ -67,15 +71,11 @@ ArrayList<MasterObject> loadLevel(String filename){
 }
 
 void draw() {
-  frustum(-10, 10, -7, 7, 10, 10000);
   player.run();
-  for (MasterObject mo : level){
-    mo.collide(player);
-  }
 
   background(10);
   ambientLight(255, 255, 255, 0, 0, 0);
-  player.display();
+
   for (MasterObject mo : level){
     mo.run();
     mo.display();
@@ -84,6 +84,7 @@ void draw() {
     p.display();
   }
 
+  player.display();
   debug();
   //println("----------------");
 }

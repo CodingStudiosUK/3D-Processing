@@ -8,14 +8,15 @@ final int PORT = 2323;
 HashMap<String, Player> players = new HashMap<String, Player>();
 
 void setup(){
-  fullScreen(FX2D);//size(400, 400);
+  fullScreen();//size(400, 400);
   udp = new UDP(this, PORT);
   udp.listen(true);
-  frameRate(600);
 }
 
 void draw(){
   background(0);
+  fill(255);
+  text(frameRate+"\n"+players.values().size(), 20, 20);
   for(Player p : players.values()){
     //println(p.id);
     p.display();

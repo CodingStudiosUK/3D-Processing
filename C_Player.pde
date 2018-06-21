@@ -1,13 +1,17 @@
+final int PLAYER_VELOCITY_TERMINAL = 25;
+
 class Player extends MasterEntity{
 
-  final float JUMP_VEL = GRAVITY.y*2;
+  final float JUMP_VEL = 10;
 
   final float MAX_SPEED = 8;//TODO:temp
-  final float ACC = 0.002, DECC = 0.6;
+  final float ACC = 0.002, DECC = 1;
   final float INITIAL_SPEED = 0.4;
   float jumpSpeed = 0;
   Camera cam;
   color col;
+
+  HUD hud;
 
   Player(float x1, float y1, float z1, float x2, float y2, float z2){
     super(x1, y1, z1, x2, y2, z2);
@@ -15,42 +19,46 @@ class Player extends MasterEntity{
     dir = new PVector(0, -90);
 
     cam = new Camera();
+    hud = new HUD();
+    hud.addItem("fps", new HUDText(0, 0, 22, color(255)));
+    hud.addItem("health", new HUDBar(65, height-55, 200, 50, color(200), color(0, 0, 255)));
+    hud.addItem("healthIcon", new HUDIcon(10, height-55, 50, 50, loadImage("health.jpg")));
   }
 
   void move(){
 
     if (keysHold.get(keysName.get("up"))){
-      pos.y -= MAX_SPEED*0.4;
-      pos.sub(GRAVITY);
+      ground = false;
+      vel.y = -JUMP_VEL;
     }
     if (keysHold.get(keysName.get("down"))){
-      pos.y += MAX_SPEED*0.4;
-      pos.add(GRAVITY);
+      vel.y = JUMP_VEL;
     }
     if(keysHold.get(keysName.get("jump")) && ground == true){
-      jumpSpeed = JUMP_VEL;
+      vel.y -= JUMP_VEL;//jumpSpeed = JUMP_VEL;
       ground = false;
 
     }
-    pos.y -= jumpSpeed;
-    jumpSpeed = constrain(jumpSpeed-DECC, 0, JUMP_VEL);
-    println(jumpSpeed);
+
 
 
     int moveDir = getMoveDirect();
     if (moveDir==-23){
-      vel.mult(0);
+      vel.set(0, vel.y, 0);
       return;
     }
     float move = degrees(new PVector(cam.center.x, cam.center.z).heading())+180+moveDir;
     move = (360+move)%360;
 
-    PVector moveVel = PVector.mult(PVector.fromAngle(radians(move-180)), constrain(vel.mag(), INITIAL_SPEED, MAX_SPEED));
-    moveVel.add(ACC, 0, ACC);
-    vel.add(moveVel.x, 0, moveVel.y);
-    vel.limit(MAX_SPEED);
+    PVector moveAccel = PVector.mult(PVector.fromAngle(radians(move-180)), constrain(new PVector(vel.x, vel.z).mag(), INITIAL_SPEED, MAX_SPEED));
+    moveAccel.add(ACC, ACC);
+    vel.add(moveAccel.x, 0, moveAccel.y);
+    PVector velHor = new PVector(vel.x, vel.z);
+    velHor.limit(MAX_SPEED);
+    vel.x = velHor.x;
+    vel.z = velHor.y;
 
-    pos.add(vel);
+
     ground = false;
   }
 
@@ -95,7 +103,6 @@ class Player extends MasterEntity{
   }
 
   void collideWith(int x, MasterObject mo){
-    if(x > -1 && x != 4) println(x);
     switch(x){
       case TOUCH_BOTTOM:
         pos.y = mo.getBottom()+size.y/2;
@@ -122,13 +129,21 @@ class Player extends MasterEntity{
     }
   }
 
+  void physics(){
+    if(!ground){
+      vel.add(GRAVITY);
+      vel.y = constrain(vel.y, -MAX_INT, PLAYER_VELOCITY_TERMINAL);
+    }
+    pos.add(vel);
+  }
+
   void run(){
 
 
 
     if(keysPress.get(keysName.get("mouseLock"))){
       dir.x += (mouseX-width/2)*0.3;
-      dir.y += (mouseY-height/2)*0.3*10/7;
+      dir.y += (mouseY-height/2)*0.3;//*10/7;
       dir.y = constrain(dir.y, -89, 89);
       robot.mouseMove(displayWidth/2, displayHeight/2);
     }
@@ -136,9 +151,11 @@ class Player extends MasterEntity{
     cam.changeDir(dir.x, dir.y);
 
     move();
-    pos.add(GRAVITY);
-    send(String.valueOf(pos));
+
+    //send(String.valueOf(pos));
     //sendNEW(pos);
+    hud.updateItem("fps", String.valueOf(frameRate));
+    hud.updateItem("health", 0.6);
   }
 
   // void hud(){
@@ -158,7 +175,9 @@ class Player extends MasterEntity{
   //}
 
   void display(){
+    hud.display(); //MUST be before camera update
     cam.display();
+
   }
 
 
@@ -167,9 +186,11 @@ class Player extends MasterEntity{
 
    final float RADIUS = 1000; // How far away the camera center is.
    PVector center;
+   PVector eye;
 
    Camera(){
      changeDir(0, 0);
+     eye = pos.copy();
    }
 
    void changeDir(float angRight, float angDown){
@@ -181,8 +202,12 @@ class Player extends MasterEntity{
    }
 
     void display(){
-     //camera(pos.x, pos.y, MAGIC+pos.z, pos.x+view.x, pos.y+view.y, pos.z+view.z, 0, 1, 0);
-      camera(pos.x, getTop()+10, pos.z, pos.x+center.x, pos.y+center.y, pos.z+center.z, 0, 1, 0);
+      eye.x = lerp(eye.x, pos.x, 0.5);
+      eye.y = lerp(eye.y, pos.y, 0.5);
+      eye.z = lerp(eye.z, pos.z, 0.5);
+      //camera(pos.x, pos.y, MAGIC+pos.z, pos.x+view.x, pos.y+view.y, pos.z+view.z, 0, 1, 0);
+      perspective(radians(60),(float)width/(float)height,10,10000);
+      camera(eye.x, eye.y-size.y/2+PLAYER_EYE_OFFSET, eye.z, eye.x+center.x, eye.y+center.y, eye.z+center.z, 0, 1, 0);
     }
 
   }
@@ -204,7 +229,7 @@ class PlayerOther extends Player{
     for(int i = 0; i < vals.length; i++){
       p[i] = Float.parseFloat(vals[i]);
     }
-    pos.set(p[0], p[1], p[2]);
+    pos.set(p[0], p[1]-PLAYER_HEIGHT/2+PLAYER_EYE_OFFSET, p[2]);
   }
 
   void display(){

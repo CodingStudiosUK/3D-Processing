@@ -77,7 +77,7 @@ abstract class MasterObject{
     && mo.getBottom() > getTop() && mo.getTop() < getBottom()){
       if(mo.pos.y < getTop()){
         return TOUCH_TOP;
-      }else if(mo.pos.y > getBottom()){
+      }else if(mo.pos.y > getBottom()+mo.size.y/2){
         return TOUCH_BOTTOM;
       }else {
         float angO = atan2(mo.pos.z-pos.z, mo.pos.x-pos.x);
