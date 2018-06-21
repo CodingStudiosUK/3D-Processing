@@ -139,22 +139,22 @@ class Player extends MasterEntity{
       vel.y = constrain(vel.y, -MAX_INT, PLAYER_VELOCITY_TERMINAL);
     }
     if(!isMoving()){
-      vel.x = 0;
-      vel.z = 0;
-      // if(vel.x <= -DECC-0.1){
-      //   vel.add(DECC, 0, 0);
-      // }else if(vel.x >= DECC+0.1){
-      //   vel.sub(DECC, 0, 0);
-      // }else{
-      //   vel.x = 0;
-      // }
-      // if(vel.z <= -DECC-0.1){
-      //   vel.add(0, 0, DECC);
-      // }else if(vel.z >= DECC+0.1){
-      //   vel.sub(0, 0, DECC);
-      // }else{
-      //   vel.z = 0;
-      // }
+      // vel.x = 0;
+      // vel.z = 0;
+      if(vel.x <= -DECC-0.1){
+        vel.add(DECC, 0, 0);
+      }else if(vel.x >= DECC+0.1){
+        vel.sub(DECC, 0, 0);
+      }else{
+        vel.x = 0;
+      }
+      if(vel.z <= -DECC-0.1){
+        vel.add(0, 0, DECC);
+      }else if(vel.z >= DECC+0.1){
+        vel.sub(0, 0, DECC);
+      }else{
+        vel.z = 0;
+      }
     }
     pos.add(vel);
   }
@@ -179,22 +179,6 @@ class Player extends MasterEntity{
     hud.updateItem("fps", String.valueOf(frameRate));
     hud.updateItem("health", 0.6);
   }
-
-  // void hud(){
-    // fill(255, 0, 0);
-    // textSize(6);
-    // float pOffX = vel.x;
-    // float pOffY = vel.y;
-    // pushMatrix();
-    // translate(pos.x+view.x, pos.y+constrain(view.y, -RADIUS, RADIUS), pos.z+view.z);
-    // float rotY = atan2(view.x, view.z)+PI;
-    // rotateY(rotY);
-    // rotateX(atan2(RADIUS*1.5-abs(view.z)*abs(sin(rotY)), -view.y)+PI+HALF_PI);
-    // //rotateZ(atan2(-abs(cos(rotY))*RADIUS, view.y)+HALF_PI);
-    // text(readable(pos), 0, 0);
-    // fill(255);
-    // popMatrix();
-  //}
 
   void display(){
     hud.display(); //MUST be before camera update
