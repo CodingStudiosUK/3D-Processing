@@ -7,41 +7,15 @@ class Player extends MasterEntity{
   final float INITIAL_SPEED = 0.4;
   float jumpSpeed = 0;
   Camera cam;
+  color col;
 
   Player(float x1, float y1, float z1, float x2, float y2, float z2){
     super(x1, y1, z1, x2, y2, z2);
     vel = new PVector(0, 0, 0);
-    dir = new PVector(0, 90);
+    dir = new PVector(0, -90);
 
     cam = new Camera();
   }
-
-  /*void moveRP(){
-    // Jumping.
-    if (keysHold.get(keysName.get("jump")) && ground) {
-      vel.y = -JUMP_VEL;
-      ground = false;
-    }
-    // Running, or decelerating.
-    int moveDir = getMoveDirect();
-    if (moveDir == -23){
-      speed -= 0.25;
-    } else {
-      speed += 0.25;
-    }
-    speed = constrain(speed,0,10);
-
-    float move = (degrees(new PVector(cam.center.x, cam.center.z).heading())+540+moveDir)%360;
-    PVector moveVel = new PVector(speed,0).rotate(radians(move));
-
-    vel.x = moveVel.x;
-    vel.z = moveVel.y;
-
-    vel.add(GRAVITY);
-    vel.y = constrain(vel.y,-JUMP_VEL,JUMP_VEL);
-
-    pos.add(vel);
-  }*/
 
   void move(){
 
@@ -195,7 +169,7 @@ class Player extends MasterEntity{
    PVector center;
 
    Camera(){
-     changeDir(0, 90);
+     changeDir(0, 0);
    }
 
    void changeDir(float angRight, float angDown){
@@ -217,7 +191,7 @@ class Player extends MasterEntity{
 class PlayerOther extends Player{
 
   PlayerOther(String d){
-    super(0, 0, 0, 40, 140, 40);
+    super(0, 0, 0, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_DEPTH);
     updatePos(d);
   }
 
@@ -230,9 +204,7 @@ class PlayerOther extends Player{
     for(int i = 0; i < vals.length; i++){
       p[i] = Float.parseFloat(vals[i]);
     }
-    if(dist(pos.x, pos.y, pos.z, p[0], p[1], p[2]) > 50){
-      pos.set(p[0], p[1], p[2]);
-    }
+    pos.set(p[0], p[1], p[2]);
   }
 
   void display(){

@@ -1,8 +1,9 @@
 final String SERVER_IP = "169.254.198.17";
-final int PORT = 2324;
+final int SEND_PORT = 2323;
+final int REC_PORT = 2324;
 
 void send(String m) {
-  udp.send(m, "127.0.0.1", 2323);
+  udp.send(m, "127.0.0.1", SEND_PORT);
 }
 
 void sendNEW(PVector p) {
@@ -15,7 +16,7 @@ void sendNEW(PVector p) {
           outputBytes[k] = (byte)((integerTemp >> (8 * j)) & 0xFF);
       }
   }
-  udp.send(outputBytes, SERVER_IP, PORT);
+  udp.send(outputBytes, SERVER_IP, SEND_PORT);
 }
 
 void receive(byte[] _data, String ip, int port) {

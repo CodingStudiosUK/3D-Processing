@@ -5,11 +5,15 @@ final int TOUCH_NOT = -1,
   TOUCH_BACK = 3,
   TOUCH_TOP = 4,
   TOUCH_BOTTOM = 5;
+final color DEFAULT_COLOR = color(255, 2);
+final color DEFAULT_STROKE = color(255);
 
 abstract class MasterObject{
 
   PVector pos, size;
   int collision = -1;
+  color col = DEFAULT_COLOR;
+  color stroke = DEFAULT_STROKE;
 
   MasterObject(float x1, float y1, float z1, float x2, float y2, float z2, int type){
     switch (type){
@@ -24,6 +28,15 @@ abstract class MasterObject{
       size = new PVector(x2,y2,z2);
       break;
     }
+  }
+
+  void setColor(color c, color s){
+    col = c;
+    stroke = s;
+  }
+
+  void setColor(color c){
+    col = c;
   }
 
   @Override

@@ -2,17 +2,17 @@
 {
   "name": "Floor 1",
   "type": "Cuboid",
-  "color": {"r": 250, "g": 250, "b": 10},
+  "color": {"r": 250, "g": 150, "b": 10},
   "corners" : {
     "one": {"x": -1000, "y": 0, "z": -1000},
     "two": {"x": 1000, "y": 100, "z": 1000}
   },
-  "texture" : "brick.png"
+  "texture" : "brick.png",
 },
 {
   "name": "Box 1",
   "type": "Cuboid",
-  "color": {"r": 250, "g": 250, "b": 10},
+  "color": {"r": 10, "g": 150, "b": 200},
   "corners" : {
     "one": {"x": 200, "y": -200, "z": 200},
     "two": {"x": 300, "y": 0, "z": 300}
@@ -22,7 +22,7 @@
 {
   "name": "Box 2",
   "type": "Cuboid",
-  "color": {"r": 250, "g": 250, "b": 10},
+  "color": {"r": 150, "g": 250, "b": 10},
   "corners" : {
     "one": {"x": -50, "y": -20, "z": -200},
     "two": {"x": 50, "y": 0, "z": -300}
@@ -30,9 +30,9 @@
   "texture" : "brick.png"
 },
 {
-  "name": "Box 2",
+  "name": "Box 3",
   "type": "Cuboid",
-  "color": {"r": 250, "g": 250, "b": 10},
+  "color": {"r": 250, "g": 250, "b": 250},
   "corners" : {
     "one": {"x": -50, "y": -40, "z": -200},
     "two": {"x": -100, "y": 0, "z": -300}
@@ -40,9 +40,19 @@
   "texture" : "brick.png"
 },
 {
+  "name": "Box 4",
+  "type": "Cuboid",
+  "color": {"r": 250, "g": 250, "b": 10},
+  "corners" : {
+    "one": {"x": 1100, "y": -800, "z": 1100},
+    "two": {"x": 1200, "y": -750, "z": 1200}
+  },
+  "texture" : "brick.png"
+},
+{
   "name": "PlusZ",
   "type": "Cuboid",
-  "color": {"r": 0, "g": 250, "b": 10},
+  "color": {"r": 0, "g": 250, "b": 0},
   "corners" : {
     "one": {"x": -100, "y": -150, "z": 0},
     "two": {"x": -80, "y": -145, "z": 1500}
@@ -62,7 +72,7 @@
 {
   "name": "PlusY",
   "type": "Cuboid",
-  "color": {"r": 250, "g": 250, "b": 10},
+  "color": {"r": 0, "g": 0, "b": 255},
   "corners" : {
     "one": {"x": -100, "y": -50, "z": -10},
     "two": {"x": -90, "y": -300, "z": 30}

@@ -3,6 +3,10 @@ import java.awt.AWTException;
 import hypermedia.net.*;
 
 final boolean FULLSCREEN = true;
+final int PLAYER_WIDTH = 40;
+final int PLAYER_DEPTH = 40;
+final int PLAYER_HEIGHT = 140;
+final int PLAYER_EYE_OFFSET = 10;
 
 ArrayList<MasterObject> level;
 Player player;
@@ -38,7 +42,7 @@ void setup() {
   textSize(50);
   textAlign(CENTER, CENTER);
 
-  udp = new UDP(this,PORT);
+  udp = new UDP(this,REC_PORT);
   udp.listen(true);
   //surface.setLocation(displayWidth/2-width/2, displayHeight/2-height/2);
 }
@@ -53,7 +57,11 @@ ArrayList<MasterObject> loadLevel(String filename){
     JSONObject corners = obj.getJSONObject("corners");
     JSONObject one = corners.getJSONObject("one");
     JSONObject two = corners.getJSONObject("two");
-    al.add(new Cuboid(one.getInt("x"), one.getInt("y"), one.getInt("z"), two.getInt("x"), two.getInt("y"), two.getInt("z")));
+    JSONObject colours = obj.getJSONObject("color");
+    color col = color(colours.getInt("r"), colours.getInt("g"), colours.getInt("b"));
+    Cuboid c = new Cuboid(one.getInt("x"), one.getInt("y"), one.getInt("z"), two.getInt("x"), two.getInt("y"), two.getInt("z"));
+    c.setColor(col);
+    al.add(c);
   }
   return al;
 }
