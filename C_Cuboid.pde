@@ -4,7 +4,7 @@ class Cuboid extends MasterGeometry{
     super(x1, y1, z1, x2, y2, z2);
   }
 
-  void run(){
+  void run(){ //For moving platforms and such, done in physics thread
   }
 
   void display(){

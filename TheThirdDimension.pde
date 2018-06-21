@@ -12,105 +12,43 @@ ArrayList<MasterObject> level;
 Player player;
 HashMap<String, PlayerOther> players = new HashMap<String, PlayerOther>();
 
-Robot robot;
-PhysicsThread physics = new PhysicsThread();
+Robot robot; //Java robot object for keeping the mouse centered
+PhysicsThread physics = new PhysicsThread(); //Physics thread to improve FPS
 
 UDP udp;
 
 void settings(){
   if (FULLSCREEN) {
-    fullScreen(P3D);
+    fullScreen(OPENGL);
   }
   else {
     size(800,600,P3D);
   }
+  noSmooth(); // Antialiasing on the shadowMap leads to weird artifacts
 }
 
 void setup() {
-  try {
-   robot = new Robot();
- }
- catch (AWTException e) {
-   e.printStackTrace();
- }
-
+  config();
+  initNet();
   level = loadLevel("l0m0");
-  noCursor();
-  setKeys();
-  player = new Player(0,-60,0,40,80,40);
 
-  textSize(50);
-  textAlign(CENTER, CENTER);
+  player = new Player(0,-PLAYER_HEIGHT/2,0,PLAYER_WIDTH,PLAYER_HEIGHT,PLAYER_DEPTH); //Create the player
 
-  udp = new UDP(this,REC_PORT);
-  udp.log(false);
-  udp.listen(true);
-  //surface.setLocation(displayWidth/2-width/2, displayHeight/2-height/2);
-
-  physics.start();
-  frameRate(120);
+  physics.start(); //Start the physics thread
 }
 
-ArrayList<MasterObject> loadLevel(String filename){
-  ArrayList<MasterObject> al = new ArrayList<MasterObject>();
-  JSONArray arr = loadJSONArray(filename+".json");
-  for (int i = 0; i < arr.size(); ++i){
-    JSONObject obj = arr.getJSONObject(i);
-    /* TODO:
-    Each type of object should be created by a different function.*/
-    JSONObject corners = obj.getJSONObject("corners");
-    JSONObject one = corners.getJSONObject("one");
-    JSONObject two = corners.getJSONObject("two");
-    JSONObject colours = obj.getJSONObject("color");
-    color col = color(colours.getInt("r"), colours.getInt("g"), colours.getInt("b"));
-    Cuboid c = new Cuboid(one.getInt("x"), one.getInt("y"), one.getInt("z"), two.getInt("x"), two.getInt("y"), two.getInt("z"));
-    c.setColor(col);
-    al.add(c);
-  }
-  return al;
-}
 
 void draw() {
-  player.run();
+  player.run(); //Do Player interaction
 
-  background(10);
-  ambientLight(255, 255, 255, 0, 0, 0);
+  setLights();
 
-  for (MasterObject mo : level){
-    mo.run();
+  for (MasterObject mo : level){ //Run loop and draw loop of level objects
     mo.display();
   }
-  for(Player p : players.values()){
+  for(Player p : players.values()){ //Draws other players
     p.display();
   }
 
-  player.display();
-  debug();
-  //println("----------------");
+  player.display(); //Draws the hud and moves the camera.
 }
-
-void debug(){
-
-  if(keysPress.get(keysName.get("debug"))){
-    // pushMatrix();
-    // translate(player.pos.x+player.view.x,player.pos.y+player.view.y, player.pos.z+player.view.z);
-    // float headX = PI-atan2(player.view.x, player.view.z);
-    // print(degrees(headX)+" :: ");
-    // float headY = cos(headX-HALF_PI);
-    // print(degrees(headY)+" :: ");
-    // rotateX(asin(headY));
-    // rotateZ(acos(headY));
-    // rotateY(headX);
-    // box(20, 20, 20);
-    // fill(255, 0, 0);
-    // text(round(frameRate), 0, 0);
-    // fill(255);
-    // popMatrix();
-  }
-}
-
-
-/*void mousePressed(){
-  level.add(new Cuboid(player.pos.x+player.view.x-10, player.pos.y+player.view.y-10, player.pos.z+player.view.z-10,
-    player.pos.x+player.view.x+10, player.pos.y+player.view.y+10, player.pos.z+player.view.z+10));
-}*/

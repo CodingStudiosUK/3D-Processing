@@ -13,6 +13,7 @@ class PhysicsThread extends Thread { //A custom thread class to easily multithre
     while(true){
       //Do physics
       for (MasterObject mo : level){
+        mo.run();
         mo.collide(player);
       }
       player.physics();

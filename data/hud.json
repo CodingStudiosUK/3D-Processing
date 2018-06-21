@@ -1,0 +1,25 @@
+
+[
+{
+  "_Description": "Position is a number between 0 and 1 where (0, 0) is top left and (1, 1) is bottom right of the canvas",
+}
+{
+  "name": "FPS",
+  "type": "Text",
+  "color": {
+    "fill": {"r": 255, "g": 255, "b": 255},
+  },
+  "position": {"x": 0, "y": 0},
+  "size": 22,
+},
+{
+  "name": "Health",
+  "type": "Bar",
+  "color": {
+    "fill": {"r": 200, "g": 200, "b": 200},
+    "stroke": {"r": 255, "g": 255, "b": 255},
+  },
+  "position": {"x": 0, "y": 0},
+  "size": 22,
+},
+]

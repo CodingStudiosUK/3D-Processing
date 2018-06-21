@@ -4,10 +4,9 @@ class Player extends MasterEntity{
 
   final float JUMP_VEL = 10;
 
-  final float MAX_SPEED = 8;//TODO:temp
-  final float ACC = 0.002, DECC = 1;
+  final float MAX_SPEED = 15;//TODO:temp
+  final float ACC = 2, DECC = 4;
   final float INITIAL_SPEED = 0.4;
-  float jumpSpeed = 0;
   Camera cam;
   color col;
 
@@ -25,7 +24,7 @@ class Player extends MasterEntity{
     hud.addItem("healthIcon", new HUDIcon(10, height-55, 50, 50, loadImage("health.jpg")));
   }
 
-  void move(){
+  void move(){ //Returns false if the player didn't move
 
     if (keysHold.get(keysName.get("up"))){
       ground = false;
@@ -40,26 +39,31 @@ class Player extends MasterEntity{
 
     }
 
+    int moveDir = getMoveDirect(); //Gets the direction to move the player
+    if (moveDir != -23){ //-23 means no keys are being pressed
+      float move = degrees(new PVector(cam.center.x, cam.center.z).heading())+180+moveDir;
+      move = (360+move)%360;
 
-
-    int moveDir = getMoveDirect();
-    if (moveDir==-23){
-      vel.set(0, vel.y, 0);
-      return;
+      PVector moveAccel = PVector.mult(PVector.fromAngle(radians(move-180)), constrain(new PVector(vel.x, vel.z).mag(), INITIAL_SPEED, MAX_SPEED));
+      moveAccel.add(ACC*cos(moveAccel.heading()), ACC*sin(moveAccel.heading()));
+      vel.add(moveAccel.x, 0, moveAccel.y);
+      PVector velHor = new PVector(vel.x, vel.z);
+      velHor.limit(MAX_SPEED);
+      vel.x = velHor.x;
+      vel.z = velHor.y;
     }
-    float move = degrees(new PVector(cam.center.x, cam.center.z).heading())+180+moveDir;
-    move = (360+move)%360;
-
-    PVector moveAccel = PVector.mult(PVector.fromAngle(radians(move-180)), constrain(new PVector(vel.x, vel.z).mag(), INITIAL_SPEED, MAX_SPEED));
-    moveAccel.add(ACC, ACC);
-    vel.add(moveAccel.x, 0, moveAccel.y);
-    PVector velHor = new PVector(vel.x, vel.z);
-    velHor.limit(MAX_SPEED);
-    vel.x = velHor.x;
-    vel.z = velHor.y;
 
 
     ground = false;
+    return;
+  }
+
+  boolean isMoving(){
+    boolean w = keysHold.get(keysName.get("forward"));
+    boolean s = keysHold.get(keysName.get("backward"));
+    boolean a = keysHold.get(keysName.get("left"));
+    boolean d = keysHold.get(keysName.get("right"));
+    return w|a|s|d;
   }
 
   int getMoveDirect(){
@@ -134,6 +138,24 @@ class Player extends MasterEntity{
       vel.add(GRAVITY);
       vel.y = constrain(vel.y, -MAX_INT, PLAYER_VELOCITY_TERMINAL);
     }
+    if(!isMoving()){
+      vel.x = 0;
+      vel.z = 0;
+      // if(vel.x <= -DECC-0.1){
+      //   vel.add(DECC, 0, 0);
+      // }else if(vel.x >= DECC+0.1){
+      //   vel.sub(DECC, 0, 0);
+      // }else{
+      //   vel.x = 0;
+      // }
+      // if(vel.z <= -DECC-0.1){
+      //   vel.add(0, 0, DECC);
+      // }else if(vel.z >= DECC+0.1){
+      //   vel.sub(0, 0, DECC);
+      // }else{
+      //   vel.z = 0;
+      // }
+    }
     pos.add(vel);
   }
 
@@ -206,7 +228,7 @@ class Player extends MasterEntity{
       eye.y = lerp(eye.y, pos.y, 0.5);
       eye.z = lerp(eye.z, pos.z, 0.5);
       //camera(pos.x, pos.y, MAGIC+pos.z, pos.x+view.x, pos.y+view.y, pos.z+view.z, 0, 1, 0);
-      perspective(radians(60),(float)width/(float)height,10,10000);
+      perspective(radians(60),(float)width/(float)height,1,10000);
       camera(eye.x, eye.y-size.y/2+PLAYER_EYE_OFFSET, eye.z, eye.x+center.x, eye.y+center.y, eye.z+center.z, 0, 1, 0);
     }
 
