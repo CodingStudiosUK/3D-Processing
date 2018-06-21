@@ -1,9 +1,9 @@
-final String SERVER_IP = "169.254.198.17";
+final String SERVER_IP = "10.56.101.108";
 final int SEND_PORT = 2323;
 final int REC_PORT = 2324;
 
 void send(String m) {
-  udp.send(m, "127.0.0.1", SEND_PORT);
+  udp.send(m, SERVER_IP, SEND_PORT);
 }
 
 void sendNEW(PVector p) {
