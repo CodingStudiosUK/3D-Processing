@@ -2,7 +2,7 @@ final int PLAYER_VELOCITY_TERMINAL = 25;
 
 class Player extends MasterEntity{
 
-  final float JUMP_VEL = 10;
+  final float JUMP_VEL = 12;
 
   final float MAX_SPEED = 15;//TODO:temp
   final float ACC = 2, DECC = 4;
@@ -112,11 +112,15 @@ class Player extends MasterEntity{
   void collideWith(int x, MasterObject mo){ //Actions to perform if the player collides with an object
     switch(x){
       case TOUCH_BOTTOM:
-        pos.y = mo.getBottom()+size.y/2;
+        if (vel.y <= 0){
+          pos.y = mo.getBottom()+size.y/2;
+        }
         break;
       case TOUCH_TOP:
-        pos.y = mo.getTop()-size.y/2;
-        ground = true;
+        if(vel.y >= 0){
+          pos.y = mo.getTop()-size.y/2;
+          ground = true;
+        }
         break;
       case TOUCH_BACK:
         pos.z = mo.getBack()+size.z/2;
@@ -142,7 +146,7 @@ class Player extends MasterEntity{
       vel.y = constrain(vel.y, -MAX_INT, PLAYER_VELOCITY_TERMINAL); //Stop the player accelerating constantly
     }
     if(!isMoving()){ //If not moving, deccelerate TODO: implement this mathematically
-      if(vel.x <= -DECC-0.1){ //Too many IF statements
+      if(vel.x <= -DECC-0.1){ //Deccelerates x and z, if vel < 4 then set to 0
         vel.add(DECC, 0, 0);
       }else if(vel.x >= DECC+0.1){
         vel.sub(DECC, 0, 0);
@@ -172,13 +176,13 @@ class Player extends MasterEntity{
 
     move(); //All the movement stuff
 
-    //send(String.valueOf(pos));
+    send(String.valueOf(pos));
     //sendNEW(pos);
     hud.updateItem("fps", String.valueOf(frameRate)); //Updates HUD elements TODO: find better way/move to function
     hud.updateItem("health", health/100);
   }
 
-  void display(){ //Drars HUD and camera
+  void display(){ //Draws HUD and camera
     hud.display(); //MUST be before camera update
     cam.display();
 
@@ -233,7 +237,7 @@ class PlayerOther extends Player{ //Class for other players on the server
     for(int i = 0; i < vals.length; i++){
       p[i] = Float.parseFloat(vals[i]);
     }
-    pos.set(p[0], p[1]-PLAYER_HEIGHT/2+PLAYER_EYE_OFFSET, p[2]);
+    pos.set(p[0], p[1]-PLAYER_EYE_OFFSET, p[2]);
   }
 
   void display(){ //Draws the other players TODO: Give each player a colour and nametag

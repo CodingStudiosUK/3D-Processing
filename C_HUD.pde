@@ -18,14 +18,11 @@ class HUD{
     for(HUDObject ho : items.values()){
       ho.display();
     }
-    fill(0, 255, 0);
-    text(String.valueOf(player.vel), 20, 150);
     //Draw hud elements as 2D canvas
     endDrawHud();
   }
 }
 abstract class HUDObject<V>{ //Parent class for HUD objects, sets up necessary methods/properties
-  private V type;
   PVector pos;
   color colFill;
   color colStroke;
@@ -38,10 +35,6 @@ abstract class HUDObject<V>{ //Parent class for HUD objects, sets up necessary m
 
   abstract void update(V v);
   abstract void display();
-
-  V getType(){
-    return type;
-  }
 
 }
 

@@ -2,11 +2,11 @@ import java.awt.Robot;
 import java.awt.AWTException;
 import hypermedia.net.*;
 
-final boolean FULLSCREEN = true;
+final boolean FULLSCREEN = true; //
 final int PLAYER_WIDTH = 40;
 final int PLAYER_DEPTH = 40;
 final int PLAYER_HEIGHT = 140;
-final int PLAYER_EYE_OFFSET = 10;
+final int PLAYER_EYE_OFFSET = 10; //Arbitrary values.
 
 ArrayList<MasterObject> level;
 Player player;

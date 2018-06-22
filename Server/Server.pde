@@ -8,7 +8,7 @@ final int PORT = 2323;
 HashMap<String, Player> players = new HashMap<String, Player>();
 
 void setup(){
-  fullScreen();//size(400, 400);
+  size(400, 400);
   udp = new UDP(this, PORT);
   udp.listen(true);
 }
