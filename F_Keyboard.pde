@@ -2,7 +2,7 @@ HashMap<Character, Boolean> keysHold = new HashMap<Character, Boolean>(),
   keysPress = new HashMap<Character, Boolean>();
 HashMap<String, Character> keysName = new HashMap<String, Character>();
 
-void setKeys() {
+void setKeys() { //Adds all the keys TODO: Move to a config file.
   keysName.put("left", 'a');
   keysName.put("forward", 'w');
   keysName.put("right", 'd');
@@ -33,11 +33,11 @@ void setKeys() {
   keysPress.put(keysName.get("mouseLock"), true);
 }
 
-void keyPressed() {
+void keyPressed() { //When the user presses a key
   char k = Character.toLowerCase(key);
 
-  if (keysHold.containsKey(k)) keysHold.put(k, true);
-  if (keysPress.containsKey(k)) keysPress.put(k, !keysPress.get(k));
+  if (keysHold.containsKey(k)) keysHold.put(k, true); //For keys being held
+  if (keysPress.containsKey(k)) keysPress.put(k, !keysPress.get(k)); //For keys being toggles
 }
 
 void keyReleased() {

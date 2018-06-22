@@ -2,18 +2,18 @@ String readable(PVector p){
   return round(p.x)+" . "+round(p.y)+" . "+round(p.z);
 }
 
-void startDrawHud(){
+void startDrawHud(){ //Sets of camera/lighting for HUD
   camera();
   noLights();
-  hint(DISABLE_DEPTH_TEST);
+  hint(DISABLE_DEPTH_TEST); //Makes sure HUD elements are ALWAYS in front
   //frustum(-10, 0, 0, 10, 10, 10000);
 }
 
-void endDrawHud(){
+void endDrawHud(){ //Reenabled depth
   hint(ENABLE_DEPTH_TEST);
 }
 
-void config(){
+void config(){ //Sets of parameters before the program starts running
   try { //Setup Java robot to keep mouse in the center of the screen
    robot = new Robot();
   }

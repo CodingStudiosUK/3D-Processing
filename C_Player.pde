@@ -12,19 +12,22 @@ class Player extends MasterEntity{
 
   HUD hud;
 
-  Player(float x1, float y1, float z1, float x2, float y2, float z2){
+  //Stats
+  float health = 100;
+
+  Player(float x1, float y1, float z1, float x2, float y2, float z2){ //Size and position params
     super(x1, y1, z1, x2, y2, z2);
-    vel = new PVector(0, 0, 0);
+    vel = new PVector(0, 0, 0); //Init player specific PVectors
     dir = new PVector(0, -90);
 
-    cam = new Camera();
+    cam = new Camera(); //Create camera and HUD
     hud = new HUD();
-    hud.addItem("fps", new HUDText(0, 0, 22, color(255)));
-    hud.addItem("health", new HUDBar(65, height-55, 200, 50, color(200), color(0, 0, 255)));
+    hud.addItem("fps", new HUDText(0, 0, 22, color(255))); //Adds HUD element, move to config file
+    hud.addItem("health", new HUDBar(65, height-55, 300, 50, color(200), color(0, 0, 255)));
     hud.addItem("healthIcon", new HUDIcon(10, height-55, 50, 50, loadImage("health.jpg")));
   }
 
-  void move(){ //Returns false if the player didn't move
+  void move(){ //Adds movement acceleration when the player presses a key
 
     if (keysHold.get(keysName.get("up"))){
       ground = false;
@@ -58,7 +61,7 @@ class Player extends MasterEntity{
     return;
   }
 
-  boolean isMoving(){
+  boolean isMoving(){ //If any key is pressed, used for decceleration
     boolean w = keysHold.get(keysName.get("forward"));
     boolean s = keysHold.get(keysName.get("backward"));
     boolean a = keysHold.get(keysName.get("left"));
@@ -66,7 +69,7 @@ class Player extends MasterEntity{
     return w|a|s|d;
   }
 
-  int getMoveDirect(){
+  int getMoveDirect(){ //Calculates the direction to move in, -23 means don't move
     boolean w = keysHold.get(keysName.get("forward"));
     boolean s = keysHold.get(keysName.get("backward"));
     boolean a = keysHold.get(keysName.get("left"));
@@ -106,7 +109,7 @@ class Player extends MasterEntity{
     }
   }
 
-  void collideWith(int x, MasterObject mo){
+  void collideWith(int x, MasterObject mo){ //Actions to perform if the player collides with an object
     switch(x){
       case TOUCH_BOTTOM:
         pos.y = mo.getBottom()+size.y/2;
@@ -133,15 +136,13 @@ class Player extends MasterEntity{
     }
   }
 
-  void physics(){
-    if(!ground){
+  void physics(){ //The physics method called by the physics thread.
+    if(!ground){ //If in the sky
       vel.add(GRAVITY);
-      vel.y = constrain(vel.y, -MAX_INT, PLAYER_VELOCITY_TERMINAL);
+      vel.y = constrain(vel.y, -MAX_INT, PLAYER_VELOCITY_TERMINAL); //Stop the player accelerating constantly
     }
-    if(!isMoving()){
-      // vel.x = 0;
-      // vel.z = 0;
-      if(vel.x <= -DECC-0.1){
+    if(!isMoving()){ //If not moving, deccelerate TODO: implement this mathematically
+      if(vel.x <= -DECC-0.1){ //Too many IF statements
         vel.add(DECC, 0, 0);
       }else if(vel.x >= DECC+0.1){
         vel.sub(DECC, 0, 0);
@@ -156,31 +157,28 @@ class Player extends MasterEntity{
         vel.z = 0;
       }
     }
-    pos.add(vel);
+    pos.add(vel); //Add velocity to position
   }
 
-  void run(){
-
-
-
-    if(keysPress.get(keysName.get("mouseLock"))){
-      dir.x += (mouseX-width/2)*0.3;
+  void run(){ //Called evey frame
+    if(keysPress.get(keysName.get("mouseLock"))){ //If mouseLOOK is on
+      dir.x += (mouseX-width/2)*0.3; //Makes the camera rotate, TODO: use constant for sensitivity
       dir.y += (mouseY-height/2)*0.3;//*10/7;
       dir.y = constrain(dir.y, -89, 89);
       robot.mouseMove(displayWidth/2, displayHeight/2);
     }
 
-    cam.changeDir(dir.x, dir.y);
+    cam.changeDir(dir.x, dir.y); //changes the camera direction
 
-    move();
+    move(); //All the movement stuff
 
     //send(String.valueOf(pos));
     //sendNEW(pos);
-    hud.updateItem("fps", String.valueOf(frameRate));
-    hud.updateItem("health", 0.6);
+    hud.updateItem("fps", String.valueOf(frameRate)); //Updates HUD elements TODO: find better way/move to function
+    hud.updateItem("health", health/100);
   }
 
-  void display(){
+  void display(){ //Drars HUD and camera
     hud.display(); //MUST be before camera update
     cam.display();
 
@@ -188,7 +186,7 @@ class Player extends MasterEntity{
 
 
 
- class Camera{
+ class Camera{ //The camera class, makes it easy to control a camera using direction
 
    final float RADIUS = 1000; // How far away the camera center is.
    PVector center;
@@ -199,16 +197,16 @@ class Player extends MasterEntity{
      eye = pos.copy();
    }
 
-   void changeDir(float angRight, float angDown){
-     float x = cos(radians(angRight));
+   void changeDir(float angRight, float angDown){ //Takes two angles and calculates a position for the camera
+     float x = cos(radians(angRight));            //to look at
      float z = sin(radians(angRight));
      float y = tan(radians(angDown));
      center = new PVector(x, y, z);
      center.mult(RADIUS);
    }
 
-    void display(){
-      eye.x = lerp(eye.x, pos.x, 0.5);
+    void display(){ //Sets the perspective and camera
+      eye.x = lerp(eye.x, pos.x, 0.5);//Smooths movement using lerp, fixes jagginess from physics thread
       eye.y = lerp(eye.y, pos.y, 0.5);
       eye.z = lerp(eye.z, pos.z, 0.5);
       //camera(pos.x, pos.y, MAGIC+pos.z, pos.x+view.x, pos.y+view.y, pos.z+view.z, 0, 1, 0);
@@ -219,14 +217,14 @@ class Player extends MasterEntity{
   }
 }
 
-class PlayerOther extends Player{
+class PlayerOther extends Player{ //Class for other players on the server
 
   PlayerOther(String d){
     super(0, 0, 0, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_DEPTH);
     updatePos(d);
   }
 
-  void updatePos(String d){
+  void updatePos(String d){ //Takes a string from the server and gets the position
     String[] vals = d.split(",");
     for(int i = 0; i < vals.length; i++){
       vals[i] = vals[i].replace("[", "").replace(" ", "").replace("]", "");
@@ -238,7 +236,7 @@ class PlayerOther extends Player{
     pos.set(p[0], p[1]-PLAYER_HEIGHT/2+PLAYER_EYE_OFFSET, p[2]);
   }
 
-  void display(){
+  void display(){ //Draws the other players TODO: Give each player a colour and nametag
     fill(0,0,200);
     cuboid(pos,size);
   }

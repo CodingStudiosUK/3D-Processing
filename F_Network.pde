@@ -2,6 +2,10 @@ final String SERVER_IP = "10.56.101.108";
 final int SEND_PORT = 2323;
 final int REC_PORT = 2324;
 
+/*TODO:
+ * Add rotation networking
+ */
+
 void send(String m) {
   udp.send(m, SERVER_IP, SEND_PORT);
 }

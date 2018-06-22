@@ -24,7 +24,7 @@ class HUD{
     endDrawHud();
   }
 }
-abstract class HUDObject<V>{
+abstract class HUDObject<V>{ //Parent class for HUD objects, sets up necessary methods/properties
   private V type;
   PVector pos;
   color colFill;
@@ -45,7 +45,7 @@ abstract class HUDObject<V>{
 
 }
 
-class HUDBar extends HUDObject<Float>{
+class HUDBar extends HUDObject<Float>{ //A health/ammo bar
   float value;
   PVector size;
 
@@ -67,7 +67,7 @@ class HUDBar extends HUDObject<Float>{
   }
 }
 
-class HUDIcon extends HUDObject<PImage>{
+class HUDIcon extends HUDObject<PImage>{ //For displaying icon images on the HUD (health/ammo icons)
   PVector size;
   PImage icon;
 
@@ -91,7 +91,7 @@ class HUDIcon extends HUDObject<PImage>{
 
 }
 
-class HUDText extends HUDObject<String>{
+class HUDText extends HUDObject<String>{ //For displaying text to the HUD
   String text;
   int size;
 
