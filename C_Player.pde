@@ -18,13 +18,14 @@ class Player extends MasterEntity{
   Player(float x1, float y1, float z1, float x2, float y2, float z2){ //Size and position params
     super(x1, y1, z1, x2, y2, z2);
     vel = new PVector(0, 0, 0); //Init player specific PVectors
-    dir = new PVector(0, -90);
+    dir = new PVector(0, 90);
 
-    cam = new Camera(); //Create camera and HUD
+    cam = new Camera(dir); //Create camera and HUD
     hud = new HUD();
     hud.addItem("fps", new HUDText(0, 0, 22, color(255))); //Adds HUD element, move to config file
     hud.addItem("health", new HUDBar(65, height-55, 300, 50, color(200), color(0, 0, 255)));
     hud.addItem("healthIcon", new HUDIcon(10, height-55, 50, 50, loadImage("health.jpg")));
+    hud.addItem("XHair", new HUDXhair(width/2, height/2, 50, 50, color(10, 255, 10)));
   }
 
   void move(){ //Adds movement acceleration when the player presses a key
@@ -196,8 +197,8 @@ class Player extends MasterEntity{
    PVector center;
    PVector eye;
 
-   Camera(){
-     changeDir(0, 0);
+   Camera(PVector dir){
+     changeDir(dir.x, dir.y);
      eye = pos.copy();
    }
 

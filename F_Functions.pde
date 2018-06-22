@@ -49,7 +49,14 @@ ArrayList<MasterObject> loadLevel(String filename){
     JSONObject two = corners.getJSONObject("two");
     JSONObject colours = obj.getJSONObject("color");
     color col = color(colours.getInt("r"), colours.getInt("g"), colours.getInt("b"));
-    Cuboid c = new Cuboid(one.getInt("x"), one.getInt("y"), one.getInt("z"), two.getInt("x"), two.getInt("y"), two.getInt("z"));
+    Cuboid c;
+    if(obj.getString("type").equals("CuboidMoving")){
+      JSONObject dist = obj.getJSONObject("distance");
+      c = new CuboidMoving(one.getInt("x"), one.getInt("y"), one.getInt("z"), two.getInt("x"), two.getInt("y"), two.getInt("z"),
+       dist.getInt("x"), dist.getInt("y"), dist.getInt("z"));
+    }else{
+      c = new Cuboid(one.getInt("x"), one.getInt("y"), one.getInt("z"), two.getInt("x"), two.getInt("y"), two.getInt("z"));
+    }
     c.setColor(col);
     al.add(c);
   }

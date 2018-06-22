@@ -10,6 +10,20 @@
   "texture" : "brick.png",
 },
 {
+  "name": "Moving platform",
+  "type": "CuboidMoving",
+  "color": {"r": 200, "g": 100, "b": 250},
+  "corners": {
+    "one": {"x": -500, "y": -300, "z": -500},
+    "two": {"x": -800, "y": -250, "z": -600},
+  },
+  "distance":{
+    "x": 500,
+    "y": 0,
+    "z": 500,
+  },
+},
+{
   "name": "Pillar",
   "type": "Cuboid",
   "color": {"r": 10, "g": 150, "b": 200},
@@ -25,53 +39,13 @@
   "type": "Cuboid",
   "color": {"r": 10, "g": 150, "b": 200},
   "corners" : {
-    "one": {"x": 150, "y": -100, "z": 200},
-    "two": {"x": 200, "y": -50, "z": 300}
+    "one": {"x": 200, "y": -50, "z": 300},
+    "two": {"x": 150, "y": -100, "z": 200}
   },
   "texture" : "brick.png"
 },
 {
   "name": "Pillar Stair 2",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 300, "y": -200, "z": 200},
-    "two": {"x": 350, "y": -250, "z": 300}
-  },
-  "texture" : "brick.png"
-},
-{
-  "name": "Pillar Stair 3",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 150, "y": -450, "z": 200},
-    "two": {"x": 200, "y": -500, "z": 300}
-  },
-  "texture" : "brick.png"
-},
-{
-  "name": "Pillar Stair 4",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 300, "y": -600, "z": 200},
-    "two": {"x": 350, "y": -650, "z": 300}
-  },
-  "texture" : "brick.png"
-},
-{
-  "name": "Pillar Stair 5",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 200, "y": -550, "z": 300},
-    "two": {"x": 300, "y": -600, "z": 350}
-  },
-  "texture" : "brick.png"
-},
-{
-  "name": "Pillar Stair 6",
   "type": "Cuboid",
   "color": {"r": 10, "g": 150, "b": 200},
   "corners" : {
@@ -81,12 +55,52 @@
   "texture" : "brick.png"
 },
 {
-  "name": "Pillar Stair 7",
+  "name": "Pillar Stair 3",
+  "type": "Cuboid",
+  "color": {"r": 10, "g": 150, "b": 200},
+  "corners" : {
+    "one": {"x": 300, "y": -250, "z": 200},
+    "two": {"x": 350, "y": -300, "z": 300}
+  },
+  "texture" : "brick.png"
+},
+{
+  "name": "Pillar Stair 4",
   "type": "Cuboid",
   "color": {"r": 10, "g": 150, "b": 200},
   "corners" : {
     "one": {"x": 200, "y": -350, "z": 150},
     "two": {"x": 300, "y": -400, "z": 200}
+  },
+  "texture" : "brick.png"
+},
+{
+  "name": "Pillar Stair 5",
+  "type": "Cuboid",
+  "color": {"r": 10, "g": 150, "b": 200},
+  "corners" : {
+    "one": {"x": 150, "y": -450, "z": 200},
+    "two": {"x": 200, "y": -500, "z": 300}
+  },
+  "texture" : "brick.png"
+},
+{
+  "name": "Pillar Stair 6",
+  "type": "Cuboid",
+  "color": {"r": 10, "g": 150, "b": 200},
+  "corners" : {
+    "one": {"x": 200, "y": -550, "z": 300},
+    "two": {"x": 300, "y": -600, "z": 350}
+  },
+  "texture" : "brick.png"
+},
+{
+  "name": "Pillar Stair 7",
+  "type": "Cuboid",
+  "color": {"r": 10, "g": 150, "b": 200},
+  "corners" : {
+    "one": {"x": 300, "y": -650, "z": 200},
+    "two": {"x": 350, "y": -700, "z": 300}
   },
   "texture" : "brick.png"
 },

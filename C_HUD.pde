@@ -38,6 +38,27 @@ abstract class HUDObject<V>{ //Parent class for HUD objects, sets up necessary m
 
 }
 
+class HUDXhair extends HUDObject<PVector>{
+
+  PVector size;
+
+  HUDXhair(int x, int y, int w, int h, color s){
+    super(x, y, color(0, 0), s);
+    this.size = new PVector(w, h);
+  }
+
+  void update(PVector siz){
+    size = siz;
+  }
+
+  void display(){
+    strokeWeight(2);
+    stroke(colStroke);
+    line(width/2-size.x/2, height/2, width/2+size.x/2, height/2);
+    line(width/2, height/2-size.y/2, width/2, height/2+size.y/2);
+  }
+}
+
 class HUDBar extends HUDObject<Float>{ //A health/ammo bar
   float value;
   PVector size;
