@@ -1,7 +1,8 @@
 class HUD{
   HashMap<String, HUDObject> items = new HashMap<String, HUDObject>();
 
-  HUD(){
+  HUD(String HUDFile){
+    items = loadHUD(HUDFile);
   }
 
   void addItem(String id, HUDObject elem){
@@ -18,6 +19,7 @@ class HUD{
     for(HUDObject ho : items.values()){
       ho.display();
     }
+    text(players.size(), 10, 50);
     //Draw hud elements as 2D canvas
     endDrawHud();
   }
@@ -27,8 +29,8 @@ abstract class HUDObject<V>{ //Parent class for HUD objects, sets up necessary m
   color colFill;
   color colStroke;
 
-  HUDObject(int x, int y, color f, color s){
-    pos = new PVector(x, y);
+  HUDObject(float x, float y, color f, color s){
+    pos = new PVector(x*width, y*height);
     colFill = f;
     colStroke = s;
   }
@@ -42,7 +44,7 @@ class HUDXhair extends HUDObject<PVector>{
 
   PVector size;
 
-  HUDXhair(int x, int y, int w, int h, color s){
+  HUDXhair(float x, float y, float w, float h, color s){
     super(x, y, color(0, 0), s);
     this.size = new PVector(w, h);
   }
@@ -63,7 +65,7 @@ class HUDBar extends HUDObject<Float>{ //A health/ammo bar
   float value;
   PVector size;
 
-  HUDBar(int x, int y, int w, int h, color c, color s){
+  HUDBar(float x, float y, float w, float h, color c, color s){
     super(x, y, c, s);
     size = new PVector(w, h);
   }
@@ -85,11 +87,11 @@ class HUDIcon extends HUDObject<PImage>{ //For displaying icon images on the HUD
   PVector size;
   PImage icon;
 
-  HUDIcon(int x, int y, int w, int h){
+  HUDIcon(float x, float y, float w, float h){
     super(x, y, DEFAULT_COLOR, DEFAULT_STROKE);
     size = new PVector(w, h);
   }
-  HUDIcon(int x, int y, int w, int h, PImage ico){
+  HUDIcon(float x, float y, float w, float h, PImage ico){
     super(x, y, DEFAULT_COLOR, DEFAULT_STROKE);
     size = new PVector(w, h);
     icon = ico;
@@ -107,9 +109,9 @@ class HUDIcon extends HUDObject<PImage>{ //For displaying icon images on the HUD
 
 class HUDText extends HUDObject<String>{ //For displaying text to the HUD
   String text;
-  int size;
+  float size;
 
-  HUDText(int x, int y, int s, color c){
+  HUDText(float x, float y, float s, color c){
     super(x, y, c, DEFAULT_STROKE);
     size = s;
   }

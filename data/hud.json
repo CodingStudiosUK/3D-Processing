@@ -1,11 +1,8 @@
 
 [
 {
-  "_Description": "Position is a number between 0 and 1 where (0, 0) is top left and (1, 1) is bottom right of the canvas",
-}
-{
-  "name": "FPS",
-  "type": "Text",
+  "name": "fps",
+  "type": "text",
   "color": {
     "fill": {"r": 255, "g": 255, "b": 255},
   },
@@ -13,13 +10,30 @@
   "size": 22,
 },
 {
-  "name": "Health",
-  "type": "Bar",
+  "name": "health-bar",
+  "type": "bar",
   "color": {
     "fill": {"r": 200, "g": 200, "b": 200},
     "stroke": {"r": 255, "g": 255, "b": 255},
   },
-  "position": {"x": 0, "y": 0},
-  "size": 22,
+  "position": {"x": 0.1, "y": 0.95},
+  "size": {"x": 200, "y": 50},
+},
+{
+  "name": "crosshair",
+  "type": "xhair",
+  "color": {
+    "fill": {"r": 0, "g": 0, "b": 0, "a": 0},
+    "stroke": {"r": 20, "g": 255, "b": 20},
+  },
+  "position": {"x": 0.5, "y": 0.5},
+  "size": {"x": 100, "y": 100},
+},
+{
+  "name": "health-icon",
+  "type": "icon",
+  "file": "health.jpg",
+  "position": {"x": 0.05, "y": 0.95},
+  "size": {"x": 50, "y": 50},
 },
 ]

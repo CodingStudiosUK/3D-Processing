@@ -1,4 +1,6 @@
+
 final int PLAYER_VELOCITY_TERMINAL = 25;
+final float MOUSE_SENSITIVITY = 0.3;
 
 class Player extends MasterEntity{
 
@@ -6,7 +8,7 @@ class Player extends MasterEntity{
 
   final float MAX_SPEED = 15;//TODO:temp
   final float ACC = 2, DECC = 4;
-  final float INITIAL_SPEED = 0.4;
+  final float INITIAL_SPEED = 0.1;
   Camera cam;
   color col;
 
@@ -21,11 +23,11 @@ class Player extends MasterEntity{
     dir = new PVector(0, 90);
 
     cam = new Camera(dir); //Create camera and HUD
-    hud = new HUD();
-    hud.addItem("fps", new HUDText(0, 0, 22, color(255))); //Adds HUD element, move to config file
-    hud.addItem("health", new HUDBar(65, height-55, 300, 50, color(200), color(0, 0, 255)));
-    hud.addItem("healthIcon", new HUDIcon(10, height-55, 50, 50, loadImage("health.jpg")));
-    hud.addItem("XHair", new HUDXhair(width/2, height/2, 50, 50, color(10, 255, 10)));
+    hud = new HUD("hud");
+    // hud.addItem("fps", new HUDText(0, 0, 22, color(255))); //Adds HUD element, move to config file
+    // hud.addItem("health", new HUDBar(65, height-55, 300, 50, color(200), color(0, 0, 255)));
+    // hud.addItem("healthIcon", new HUDIcon(10, height-55, 50, 50, loadImage("health.jpg")));
+    // hud.addItem("XHair", new HUDXhair(width/2, height/2, 50, 50, color(10, 255, 10)));
   }
 
   void move(){ //Adds movement acceleration when the player presses a key
@@ -167,8 +169,8 @@ class Player extends MasterEntity{
 
   void run(){ //Called evey frame
     if(keysPress.get(keysName.get("mouseLock"))){ //If mouseLOOK is on
-      dir.x += (mouseX-width/2)*0.3; //Makes the camera rotate, TODO: use constant for sensitivity
-      dir.y += (mouseY-height/2)*0.3;//*10/7;
+      dir.x += (mouseX-width/2)*MOUSE_SENSITIVITY; //Makes the camera rotate, TODO: use constant for sensitivity
+      dir.y += (mouseY-height/2)*MOUSE_SENSITIVITY;//*10/7;
       dir.y = constrain(dir.y, -89, 89);
       robot.mouseMove(displayWidth/2, displayHeight/2);
     }
@@ -177,10 +179,10 @@ class Player extends MasterEntity{
 
     move(); //All the movement stuff
 
-    send(String.valueOf(pos));
+    send(this);
     //sendNEW(pos);
     hud.updateItem("fps", String.valueOf(frameRate)); //Updates HUD elements TODO: find better way/move to function
-    hud.updateItem("health", health/100);
+    hud.updateItem("health-bar", health/100);
   }
 
   void display(){ //Draws HUD and camera
@@ -214,7 +216,6 @@ class Player extends MasterEntity{
       eye.x = lerp(eye.x, pos.x, 0.5);//Smooths movement using lerp, fixes jagginess from physics thread
       eye.y = lerp(eye.y, pos.y, 0.5);
       eye.z = lerp(eye.z, pos.z, 0.5);
-      //camera(pos.x, pos.y, MAGIC+pos.z, pos.x+view.x, pos.y+view.y, pos.z+view.z, 0, 1, 0);
       perspective(radians(60),(float)width/(float)height,1,10000);
       camera(eye.x, eye.y-size.y/2+PLAYER_EYE_OFFSET, eye.z, eye.x+center.x, eye.y+center.y, eye.z+center.z, 0, 1, 0);
     }
@@ -224,13 +225,18 @@ class Player extends MasterEntity{
 
 class PlayerOther extends Player{ //Class for other players on the server
 
-  PlayerOther(String d){
+  Model model;
+  PVector center = new PVector(0,0,0);
+
+  PlayerOther(String d1, String d2){
     super(0, 0, 0, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_DEPTH);
-    updatePos(d);
+    updatePos(d1, d2);
+    //model = new Model("models/ct/COUNTER-TERRORIST_GIGN.obj","models/ct/GIGN_DMBASE2.png");
+    model = new Model("models/coco/Coco.obj","models/coco/Coco.png");
   }
 
-  void updatePos(String d){ //Takes a string from the server and gets the position
-    String[] vals = d.split(",");
+  void updatePos(String d1, String d2){ //Takes a string from the server and gets the position
+    String[] vals = d1.split(",");
     for(int i = 0; i < vals.length; i++){
       vals[i] = vals[i].replace("[", "").replace(" ", "").replace("]", "");
     }
@@ -239,11 +245,24 @@ class PlayerOther extends Player{ //Class for other players on the server
       p[i] = Float.parseFloat(vals[i]);
     }
     pos.set(p[0], p[1]-PLAYER_EYE_OFFSET, p[2]);
+
+    vals = d2.split(",");
+    for(int i = 0; i < vals.length; i++){
+      vals[i] = vals[i].replace("[", "").replace(" ", "").replace("]", "");
+    }
+    p = new float[3];
+    for(int i = 0; i < vals.length; i++){
+      p[i] = Float.parseFloat(vals[i]);
+    }
+    center.set(p[0], p[1], p[2]);
   }
 
   void display(){ //Draws the other players TODO: Give each player a colour and nametag
-    fill(0,0,200);
+    noFill();
+    stroke(0,0,200);
     cuboid(pos,size);
+    PVector modelPos = new PVector(pos.x, getBottom(), pos.z);
+    model.display(modelPos, 1/*60*/, getAng(pos, center));
   }
 
 }

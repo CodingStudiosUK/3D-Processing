@@ -6,6 +6,7 @@ void send() {
   if (data.length() > 2) {
     data = data.substring(0, data.length()-1);
   }
+  data += "@"+frameCount;
   for (String ip : players.keySet()) {
     udp.send(data.replace(ip, "you"), ip, 2324);
   }
@@ -15,7 +16,7 @@ void receive( byte[] _data, String ip, int port ) {
   String data = new String(_data);
   println(data+"\n\n");
   if (players.containsKey(ip)) {
-    players.get(ip).updatePos(data);
+    players.get(ip).update(data);
   } else {
     players.put(ip, new Player(data));
     players.get(ip).id = ip;

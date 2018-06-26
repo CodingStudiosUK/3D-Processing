@@ -6,11 +6,13 @@ final int REC_PORT = 2324;
  * Add rotation networking
  */
 
-void send(String m) {
+void send(Player p) {
+  String m = String.valueOf(p.pos)+String.valueOf(p.cam.center);
+  println(m);
   udp.send(m, SERVER_IP, SEND_PORT);
 }
 
-void sendNEW(PVector p) {
+/*void sendNEW(PVector p) {
   int[] pos = {(int)p.x, (int)p.y, (int)p.z};
   byte[] outputBytes = new byte[pos.length * 4];
 
@@ -21,19 +23,20 @@ void sendNEW(PVector p) {
       }
   }
   udp.send(outputBytes, SERVER_IP, SEND_PORT);
-}
+}*/
 
 void receive(byte[] _data, String ip, int port) {
+  // [pos][center]ip@
   String message = new String(_data);
   String[] others = message.split("@");
-  for(int i = 0; i < others.length; i++){
+  serverFrames = int(others[others.length-1]);
+  for(int i = 0; i < others.length-1; i++){ //The last elem is used for server sync data
     if(others[i].contains("you")) continue;
-    String pos = others[i].substring(1, others[i].indexOf("]"));
-    String oIP = others[i].substring(others[i].indexOf("]"), others[i].length());
-    if(players.containsKey(oIP)){
-      players.get(oIP).updatePos(pos);
+    String[] player = others[i].split("\\]");
+    if(players.containsKey(player[2])){
+      players.get(player[2]).updatePos(player[0], player[1]);
     }else{
-      players.put(oIP, new PlayerOther(pos));
+      players.put(player[2], new PlayerOther(player[0], player[1]));
     }
   }
   //DECODE positions

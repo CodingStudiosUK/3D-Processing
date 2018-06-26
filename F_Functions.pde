@@ -32,9 +32,66 @@ void initNet(){ //Configures UDP stuff (and more in the future)
 
 void setLights(){
   background(10); //Lighting and graphics stuff
-  spotLight(255, 255, 255, -100, -800, -100, 1, 1, 1, 120, 500);
-  directionalLight(255, 255, 255, 1, 1, 2);
-  ambientLight(100, 100, 100, 0, 0, 0);
+  //spotLight(255, 255, 255, -100, -800, -100, 1, 1, 1, 120, 500);
+  //directionalLight(255, 255, 255, 1, 1, 2);
+  ambientLight(255, 255, 255, 0, 0, 0);
+}
+
+color getJSONColor(JSONObject o){
+  return color(o.getInt("r"), o.getInt("g"), o.getInt("b"));
+}
+
+float getX(JSONObject o){
+  return o.getFloat("x");
+}
+float getY(JSONObject o){
+  return o.getFloat("y");
+}
+float getZ(JSONObject o){
+  return o.getFloat("z");
+}
+
+HashMap<String, HUDObject> loadHUD(String filename){
+  HashMap<String, HUDObject> elems = new HashMap<String, HUDObject>();
+  JSONArray arr = loadJSONArray(filename+".json");
+  for(int i = 0; i < arr.size(); i++){
+    JSONObject obj = arr.getJSONObject(i);
+    String id = obj.getString("name");
+    HUDObject e;
+    JSONObject pos = obj.getJSONObject("position");
+    JSONObject col = obj.getJSONObject("color");
+    JSONObject fill, stroke, size;
+    switch(obj.getString("type")){
+      case "text":
+        fill = col.getJSONObject("fill");
+        e = new HUDText(getX(pos), getY(pos), obj.getInt("size"),
+          getJSONColor(fill));
+        break;
+      case "bar":
+        fill = col.getJSONObject("fill");
+        stroke = col.getJSONObject("stroke");
+        size = obj.getJSONObject("size");
+        e = new HUDBar(getX(pos), getY(pos), getX(size), getY(size),
+          getJSONColor(fill), getJSONColor(stroke));
+        break;
+      case "xhair": //TODO: Use a seperate config file for crosshair
+        stroke = col.getJSONObject("stroke");
+        size = obj.getJSONObject("size");
+        e = new HUDXhair(getX(pos), getY(pos), getX(size), getY(size),
+          getJSONColor(stroke));
+        break;
+      case "icon":
+        String file = obj.getString("file");
+        size = obj.getJSONObject("size");
+        e = new HUDIcon(getX(pos), getY(pos), getX(size), getY(size), loadImage(file));
+        break;
+      default:
+        println("Invalid HUD item: "+obj.getString("type"));
+        continue;
+    }
+    elems.put(id, e);
+  }
+  return elems;
 }
 
 ArrayList<MasterObject> loadLevel(String filename){
@@ -48,7 +105,7 @@ ArrayList<MasterObject> loadLevel(String filename){
     JSONObject one = corners.getJSONObject("one");
     JSONObject two = corners.getJSONObject("two");
     JSONObject colours = obj.getJSONObject("color");
-    color col = color(colours.getInt("r"), colours.getInt("g"), colours.getInt("b"));
+    color col = getJSONColor(colours);
     Cuboid c;
     if(obj.getString("type").equals("CuboidMoving")){
       JSONObject dist = obj.getJSONObject("distance");
@@ -61,4 +118,10 @@ ArrayList<MasterObject> loadLevel(String filename){
     al.add(c);
   }
   return al;
+}
+
+float[] getAng(PVector pos, PVector center){
+  PVector diff = PVector.sub(pos, center);
+  float[] angs = {asin(diff.y/RADIUS), -atan2(diff.x, diff.z)-PI};
+  return angs;
 }

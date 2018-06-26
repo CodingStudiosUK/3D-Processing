@@ -3,10 +3,11 @@ import java.awt.AWTException;
 import hypermedia.net.*;
 
 final boolean FULLSCREEN = true; //
-final int PLAYER_WIDTH = 40;
-final int PLAYER_DEPTH = 40;
-final int PLAYER_HEIGHT = 140;
+final int PLAYER_WIDTH = 30;
+final int PLAYER_DEPTH = 30;
+final int PLAYER_HEIGHT = 110;
 final int PLAYER_EYE_OFFSET = 10; //Arbitrary values.
+int serverFrames;
 
 ArrayList<MasterObject> level;
 Player player;
@@ -28,6 +29,7 @@ void settings(){
 }
 
 void setup() {
+  randomSeed(0);
   config();
   initNet();
   level = loadLevel("l0m0");
@@ -35,6 +37,7 @@ void setup() {
   player = new Player(0,-PLAYER_HEIGHT/2,0,PLAYER_WIDTH,PLAYER_HEIGHT,PLAYER_DEPTH); //Create the player
 
   physics.start(); //Start the physics thread
+
 }
 
 
