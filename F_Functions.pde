@@ -122,6 +122,6 @@ ArrayList<MasterObject> loadLevel(String filename){
 
 float[] getAng(PVector pos, PVector center){
   PVector diff = PVector.sub(pos, center);
-  float[] angs = {asin(diff.y/RADIUS), -atan2(diff.x, diff.z)-PI};
+  float[] angs = {atan2(diff.x, diff.z)+PI, asin(diff.y/RADIUS)};
   return angs;
 }

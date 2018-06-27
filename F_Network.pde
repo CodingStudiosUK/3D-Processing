@@ -8,7 +8,6 @@ final int REC_PORT = 2324;
 
 void send(Player p) {
   String m = String.valueOf(p.pos)+String.valueOf(p.cam.center);
-  println(m);
   udp.send(m, SERVER_IP, SEND_PORT);
 }
 

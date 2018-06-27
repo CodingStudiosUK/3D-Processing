@@ -17,6 +17,8 @@ class Player extends MasterEntity{
   //Stats
   float health = 100;
 
+  AK47 ak47;
+
   Player(float x1, float y1, float z1, float x2, float y2, float z2){ //Size and position params
     super(x1, y1, z1, x2, y2, z2);
     vel = new PVector(0, 0, 0); //Init player specific PVectors
@@ -28,6 +30,8 @@ class Player extends MasterEntity{
     // hud.addItem("health", new HUDBar(65, height-55, 300, 50, color(200), color(0, 0, 255)));
     // hud.addItem("healthIcon", new HUDIcon(10, height-55, 50, 50, loadImage("health.jpg")));
     // hud.addItem("XHair", new HUDXhair(width/2, height/2, 50, 50, color(10, 255, 10)));
+
+    ak47 = new AK47(pos.x, pos.y, pos.z);
   }
 
   void move(){ //Adds movement acceleration when the player presses a key
@@ -183,12 +187,16 @@ class Player extends MasterEntity{
     //sendNEW(pos);
     hud.updateItem("fps", String.valueOf(frameRate)); //Updates HUD elements TODO: find better way/move to function
     hud.updateItem("health-bar", health/100);
+
+    ak47.updatePos(pos);
+    ak47.run();
+
   }
 
   void display(){ //Draws HUD and camera
     hud.display(); //MUST be before camera update
     cam.display();
-
+    ak47.display();
   }
 
 

@@ -30,7 +30,7 @@ class AK47 extends RangedWeapon{
   AK47(float x, float y, float z){
     super(x, y, z, 30);
 
-    model = new Model("models/ct/COUNTER-TERRORIST_GIGN.obj","models/ct/GIGN_DMBASE2.png");
+    model = new Model("models/weapons/ak47/ak47.obj","models/weapons/ak47/ak47.jpg");
   }
 
   void run(){
@@ -39,8 +39,17 @@ class AK47 extends RangedWeapon{
     }
   }
 
+  void updatePos(PVector pos){
+    float[] dir = getAng(pos, player.cam.center);
+    println(degrees(dir[0]));
+
+    this.pos = new PVector(pos.x+(PLAYER_WIDTH*0.6*sin(dir[0])), pos.y-10, pos.z+10/*+(PLAYER_DEPTH*0.6*cos(dir[0]))*/);
+  }
+
   void display(){
-    //model.display(pos, 6, );
+    float[] angs = getAng(player.pos, player.cam.center);
+    angs[1] += HALF_PI;
+    model.display(pos, 0.2, angs);
   }
 
   void shoot(){

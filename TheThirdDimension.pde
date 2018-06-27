@@ -2,7 +2,7 @@ import java.awt.Robot;
 import java.awt.AWTException;
 import hypermedia.net.*;
 
-final boolean FULLSCREEN = true; //
+final boolean FULLSCREEN = false; //
 final int PLAYER_WIDTH = 30;
 final int PLAYER_DEPTH = 30;
 final int PLAYER_HEIGHT = 110;
@@ -23,9 +23,9 @@ void settings(){
     fullScreen(OPENGL);
   }
   else {
-    size(800,600,P3D);
+    size(1200,600,P3D);
   }
-  noSmooth(); // Antialiasing on the shadowMap leads to weird artifacts
+  smooth(16);
 }
 
 void setup() {
