@@ -1,55 +1,34 @@
-import java.awt.Robot;
+import java.awt.*;
 import java.awt.AWTException;
 import hypermedia.net.*;
 
-final boolean FULLSCREEN = false; //
-final int PLAYER_WIDTH = 30;
-final int PLAYER_DEPTH = 30;
-final int PLAYER_HEIGHT = 110;
-final int PLAYER_EYE_OFFSET = 10; //Arbitrary values.
-int serverFrames;
-
-ArrayList<MasterObject> level;
-Player player;
-HashMap<String, PlayerOther> players = new HashMap<String, PlayerOther>();
-
-Robot robot; //Java robot object for keeping the mouse centered
-PhysicsThread physics = new PhysicsThread(); //Physics thread to improve FPS
-
-UDP udp;
-
-void settings(){
+void settings() {
   if (FULLSCREEN) {
-    fullScreen(OPENGL);
+    fullScreen(P3D);
+  } else {
+    size(1400, 600, P3D);
   }
-  else {
-    size(1200,600,P3D);
-  }
-  smooth(16);
+  smooth(8);
 }
 
 void setup() {
-  randomSeed(0);
   config();
   initNet();
-  level = loadLevel("l0m0");
+  map = new MapStorage();
+  keys = loadKeys();
+  models = loadModels("models/modelList");
 
-  player = new Player(0,-PLAYER_HEIGHT/2,0,PLAYER_WIDTH,PLAYER_HEIGHT,PLAYER_DEPTH); //Create the player
+  player = new Player(0, -PLAYER_HEIGHT/2, 0, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_DEPTH); //Create the player
 
   physics.start(); //Start the physics thread
-
 }
-
 
 void draw() {
   player.run(); //Do Player interaction
 
   setLights();
-
-  for (MasterObject mo : level){ //Run loop and draw loop of level objects
-    mo.display();
-  }
-  for(Player p : players.values()){ //Draws other players
+  map.render();
+  for (Player p : players.values()) { //Draws other players
     p.display();
   }
 

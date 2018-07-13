@@ -1,0 +1,47 @@
+[
+  {
+    "alias": "forward",
+    "key": "w",
+    "type": "hold",
+  },
+  {
+    "alias": "left",
+    "key": "a",
+    "type": "hold",
+  },
+  {
+    "alias": "backward",
+    "key": "s",
+    "type": "hold",
+  },
+  {
+    "alias": "right",
+    "key": "d",
+    "type": "hold",
+  },
+  {
+    "alias": "up",
+    "key": "q",
+    "type": "hold",
+  },
+  {
+    "alias": "down",
+    "key": "z",
+    "type": "hold",
+  },
+  {
+    "alias": "jump",
+    "key": " ",
+    "type": "hold",
+  },
+  {
+    "alias": "debug",
+    "key": "p",
+    "type": "press",
+  },
+  {
+    "alias": "mouseLock",
+    "key": "l",
+    "type": "press",
+  }
+]

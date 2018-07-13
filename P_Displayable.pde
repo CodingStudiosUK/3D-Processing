@@ -1,10 +1,21 @@
-class Model{
+class Model implements Displayable {
 
   PShape obj, tri, quad;
+  Vector rot;
+  float scale;
 
-  Model(String objName, String texName){
-
+  Model(String objName, float rotX, float rotY, float rotZ, float scale) {
+    println(rotX, rotY, rotZ, scale);
     obj = loadShape(objName);
+  }
+
+  Model(String objName, String texName) {
+    obj = loadShape(objName);
+    useTexture(texName);
+  }
+
+  void useTexture(String texName) {
+
     PImage tex = loadImage(texName);
     noTint();
 
@@ -46,17 +57,42 @@ class Model{
     quad.endShape();
   }
 
-  void display(PVector pos, float scale, float[] angs){
+  void display(Vector pos, Vector size, float ang) {
     fill(255);
     pushMatrix();
-    translate(pos.x,pos.y,pos.z);
+    translate(pos.x, pos.y, pos.z);
     rotateZ(PI);
-    rotateY(angs[1]);
+    rotateY(radians(ang));
     scale(scale);
-    //shape(obj); //IF using mtl file
-    shape(tri);
-    shape(quad);
+    if (tri == null) {
+      shape(obj); //IF using mtl file
+    } else {
+      shape(tri);
+      shape(quad);
+    }
     popMatrix();
   }
+}
 
+class Cuboid implements Displayable {
+
+  color col = DEFAULT_COLOR;
+  color stroke = DEFAULT_STROKE;
+  
+  Cuboid(color _col){
+    col = _col;
+  }
+
+  void display(Vector pos, Vector size, float ang) {
+    fill(col);
+    stroke(stroke);
+    pushMatrix();
+    translate(pos.x, pos.y, pos.z);
+    box(size.x, size.y, size.z);
+    popMatrix();
+  }
+}
+
+interface Displayable {
+  void display(Vector pos, Vector size, float ang);
 }

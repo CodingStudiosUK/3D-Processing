@@ -14,7 +14,6 @@ void send() {
 
 void receive( byte[] _data, String ip, int port ) {
   String data = new String(_data);
-  println(data+"\n\n");
   if (players.containsKey(ip)) {
     players.get(ip).update(data);
   } else {

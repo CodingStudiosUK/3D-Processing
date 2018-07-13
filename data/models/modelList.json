@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Coco",
+    "type": "player",
+    "obj path": "models/player/coco/Coco.obj",
+    "image path": "models/player/coco/Coco.png",
+    "use mtl": true,
+    "scale factor": 1,
+    "rotation": [0, 90, 180],
+  },
+  {
+    "name": "Counter Terrorist",
+    "obj path": "models/player/ct/COUNTER-TERRORIST_GIGN.obj",
+    "image path": "models/player/ct/GIGN_DMBASE2.png",
+    "use mtl": true,
+    "scale factor": 60,
+    "rotation": [0, 90, 180],
+  },
+  {
+    "name": "AK47",
+    "type": "weapon",
+    "obj path": "models/weapons/ak47/ak47.obj",
+    "image path": "models/weapons/ak47/ak47.jpg",
+    "use mtl": false,
+    "scale factor": 0.2,
+    "rotation": [0, 90, 180],
+  },
+]

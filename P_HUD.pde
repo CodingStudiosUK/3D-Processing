@@ -1,22 +1,22 @@
-class HUD{
+class HUD {
   HashMap<String, HUDObject> items = new HashMap<String, HUDObject>();
 
-  HUD(String HUDFile){
+  HUD(String HUDFile) {
     items = loadHUD(HUDFile);
   }
 
-  void addItem(String id, HUDObject elem){
+  void addItem(String id, HUDObject elem) {
     items.put(id, elem);
   }
 
-  void updateItem(String id, Object val){
+  void updateItem(String id, Object val) {
     HUDObject e = items.get(id);
     e.update(val);
   }
 
-  void display(){
+  void display() {
     startDrawHud();
-    for(HUDObject ho : items.values()){
+    for (HUDObject ho : items.values()) {
       ho.display();
     }
     text(players.size(), 10, 50);
@@ -24,36 +24,35 @@ class HUD{
     endDrawHud();
   }
 }
-abstract class HUDObject<V>{ //Parent class for HUD objects, sets up necessary methods/properties
-  PVector pos;
+abstract class HUDObject<V> { //Parent class for HUD objects, sets up necessary methods/properties
+  Vector pos;
   color colFill;
   color colStroke;
 
-  HUDObject(float x, float y, color f, color s){
-    pos = new PVector(x*width, y*height);
+  HUDObject(float x, float y, color f, color s) {
+    pos = new Vector(x*width, y*height);
     colFill = f;
     colStroke = s;
   }
 
   abstract void update(V v);
   abstract void display();
-
 }
 
-class HUDXhair extends HUDObject<PVector>{
+class HUDXhair extends HUDObject<Vector> {
 
-  PVector size;
+  Vector size;
 
-  HUDXhair(float x, float y, float w, float h, color s){
+  HUDXhair(float x, float y, float w, float h, color s) {
     super(x, y, color(0, 0), s);
-    this.size = new PVector(w, h);
+    this.size = new Vector(w, h);
   }
 
-  void update(PVector siz){
+  void update(Vector siz) {
     size = siz;
   }
 
-  void display(){
+  void display() {
     strokeWeight(2);
     stroke(colStroke);
     line(width/2-size.x/2, height/2, width/2+size.x/2, height/2);
@@ -61,20 +60,20 @@ class HUDXhair extends HUDObject<PVector>{
   }
 }
 
-class HUDBar extends HUDObject<Float>{ //A health/ammo bar
+class HUDBar extends HUDObject<Float> { //A health/ammo bar
   float value;
-  PVector size;
+  Vector size;
 
-  HUDBar(float x, float y, float w, float h, color c, color s){
+  HUDBar(float x, float y, float w, float h, color c, color s) {
     super(x, y, c, s);
-    size = new PVector(w, h);
+    size = new Vector(w, h);
   }
 
-  void update(Float val){
+  void update(Float val) {
     value = (float)val;
   }
 
-  void display(){
+  void display() {
     noFill();
     stroke(colStroke);
     rect(pos.x, pos.y, size.x, size.y);
@@ -83,44 +82,43 @@ class HUDBar extends HUDObject<Float>{ //A health/ammo bar
   }
 }
 
-class HUDIcon extends HUDObject<PImage>{ //For displaying icon images on the HUD (health/ammo icons)
-  PVector size;
+class HUDIcon extends HUDObject<PImage> { //For displaying icon images on the HUD (health/ammo icons)
+  Vector size;
   PImage icon;
 
-  HUDIcon(float x, float y, float w, float h){
+  HUDIcon(float x, float y, float w, float h) {
     super(x, y, DEFAULT_COLOR, DEFAULT_STROKE);
-    size = new PVector(w, h);
+    size = new Vector(w, h);
   }
-  HUDIcon(float x, float y, float w, float h, PImage ico){
+  HUDIcon(float x, float y, float w, float h, PImage ico) {
     super(x, y, DEFAULT_COLOR, DEFAULT_STROKE);
-    size = new PVector(w, h);
+    size = new Vector(w, h);
     icon = ico;
   }
 
-  void update(PImage p){
+  void update(PImage p) {
     icon = p;
   }
 
-  void display(){
+  void display() {
     image(icon, pos.x, pos.y, size.x, size.y);
   }
-
 }
 
-class HUDText extends HUDObject<String>{ //For displaying text to the HUD
+class HUDText extends HUDObject<String> { //For displaying text to the HUD
   String text;
   float size;
 
-  HUDText(float x, float y, float s, color c){
+  HUDText(float x, float y, float s, color c) {
     super(x, y, c, DEFAULT_STROKE);
     size = s;
   }
 
-  void update(String t){
+  void update(String t) {
     text = t;
   }
 
-  void display(){
+  void display() {
     fill(colFill);
     textSize(size);
     textAlign(LEFT, TOP);
