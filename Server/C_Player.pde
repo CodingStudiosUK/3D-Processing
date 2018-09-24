@@ -3,6 +3,7 @@ class Player{
   PVector center;
   color col;
   String id;
+  ArrayList<PVector> bullets = new ArrayList<PVector>();
 
   Player(String d){
     pos = new PVector();
@@ -15,6 +16,10 @@ class Player{
     String[] sections = d.split("\\]\\[");
     pos = fromStr(sections[0]);
     center = fromStr(sections[1]);
+    bullets = new ArrayList<PVector>();
+    for(int i = 2; i < sections.length; i++){
+      bullets.add(fromStr(sections[i]));
+    }
   }
 
   PVector fromStr(String d){
@@ -30,11 +35,21 @@ class Player{
   }
 
   String asString(){
-    return String.valueOf(pos)+String.valueOf(center);
+    String b = "";
+    for(int i = 0; i < bullets.size(); i++){
+      b += bullets.get(i).toString();
+    }
+    return String.valueOf(pos)+String.valueOf(center)+b;
   }
 
   void display(){
     fill(col);
+    noStroke();
     ellipse(map(pos.x, -1000, 1000, 0, width), map(pos.z, -1000, 1000, 0, height), 20, 20);
+    stroke(255);
+    for(int i = 0; i < bullets.size(); i++){
+      PVector b = bullets.get(i);
+      ellipse(map(b.x, -1000, 1000, 0, width), map(b.z, -1000, 1000, 0, height), 5, 5);
+    }
   }
 }

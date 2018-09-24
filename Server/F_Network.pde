@@ -7,6 +7,7 @@ void send() {
     data = data.substring(0, data.length()-1);
   }
   data += "@"+frameCount;
+  //println(data);
   for (String ip : players.keySet()) {
     udp.send(data.replace(ip, "you"), ip, 2324);
   }

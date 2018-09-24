@@ -8,10 +8,12 @@ void settings() {
   } else {
     size(1400, 600, P3D);
   }
-  smooth(8);
+  smooth(2);
+
 }
 
 void setup() {
+  frameRate(120);
   config();
   initNet();
   map = new MapStorage();

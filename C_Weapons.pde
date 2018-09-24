@@ -19,7 +19,7 @@ class Gun {
     if (timeout > 0) --timeout;
     for (int i = 0; i < bullets.size(); ++i){
       bullets.get(i).run();
-      if (bullets.get(i).life == 0) {
+      if (bullets.get(i).life >= MAX_DIST) {
         bullets.remove(i);
         --i;
       }
@@ -51,14 +51,15 @@ class Gun {
   void shoot() {
     bullets.add(new Bullet(player.cam.eye, player.cam.center));
     timeout = 60/FIRE_RATE;
-    println("BANG!");
   }
 }
+
+final int MAX_DIST = 2048; //units
 
 class Bullet{
 
   Vector pos, vel;
-  int life = 300;
+  int life = 0;
 
   Bullet(Vector _pos, Vector _vel){
     vel = _vel.copy().setMag(20);
@@ -67,7 +68,7 @@ class Bullet{
 
   void run(){
     pos.add(vel);
-    --life;
+    life += vel.mag();
   }
 
   void display(){
