@@ -1,7 +1,7 @@
 class PlayerOther extends Player { //Class for other players on the server
 
   //Model model;
-  //Cuboid cuboid = new Cuboid(color(0,0));
+  Cuboid cuboid = new Cuboid(color(0, 0, 200, 100));
   Vector center = new Vector(0, 0, 0);
 
   PlayerOther(String d1, String d2) {
@@ -34,10 +34,10 @@ class PlayerOther extends Player { //Class for other players on the server
   }
 
   void display() { //Draws the other players TODO: Give each player a colour and nametag
-    noFill();
-    stroke(0, 0, 200);
-    //cuboid.display(pos, size);
+    //noFill();
+    //stroke(0, 0, 200);
+    cuboid.display(pos, size, 0);
     Vector modelPos = new Vector(pos.x, getBottom(), pos.z);
-    shape.display(modelPos, size,/*60,*/ center.headingH());
+    shape.display(modelPos, size, center.headingH());
   }
 }

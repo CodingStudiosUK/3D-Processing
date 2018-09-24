@@ -14,6 +14,11 @@ class Model implements Displayable {
     useTexture(texName);
   }
 
+  Model(String objName, String texName, float s) {
+    this(objName, texName);
+    scale = s;
+  }
+
   void useTexture(String texName) {
 
     PImage tex = loadImage(texName);
@@ -57,12 +62,28 @@ class Model implements Displayable {
     quad.endShape();
   }
 
-  void display(Vector pos, Vector size, float ang) {
+  void display(Vector pos, Vector size, float ang){
     fill(255);
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
     rotateZ(PI);
     rotateY(radians(ang));
+    scale(scale);
+    if (tri == null) {
+      shape(obj); //IF using mtl file
+    } else {
+      shape(tri);
+      shape(quad);
+    }
+    popMatrix();
+  }
+  void display2(Vector pos, float angX, float angY) {
+    fill(255);
+    pushMatrix();
+    translate(pos.x, pos.y-20, pos.z);
+    rotateZ(radians(90+angY)*abs(cos(radians(angX))));
+    rotateX(radians(90+angY)*abs(sin(radians(angX))));
+    rotateY(-radians(angX));
     scale(scale);
     if (tri == null) {
       shape(obj); //IF using mtl file
@@ -78,12 +99,16 @@ class Cuboid implements Displayable {
 
   color col = DEFAULT_COLOR;
   color stroke = DEFAULT_STROKE;
-  
+
   Cuboid(color _col){
     col = _col;
   }
 
-  void display(Vector pos, Vector size, float ang) {
+  void display(Vector pos, Vector size, float ang){
+    // discard ang
+    display2(pos, size);
+  }
+  void display2(Vector pos, Vector size) {
     fill(col);
     stroke(stroke);
     pushMatrix();

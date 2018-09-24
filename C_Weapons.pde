@@ -1,65 +1,86 @@
-abstract class Weapon {
+final int FIRE_RATE = 5;
+
+class Gun {
   Displayable model;
   Vector pos;
+  ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
-  Weapon(float x, float y, float z) {
+  int timeout = 0;
+
+  Gun(float x, float y, float z) {
     pos = new Vector(x, y, z);
-  }
-
-  abstract void run();
-  abstract void display();
-}
-
-abstract class RangedWeapon extends Weapon {
-  final int MAX_AMMO;
-  int ammo;
-
-  RangedWeapon(float x, float y, float z, int am) {
-    super(x, y, z);
-    MAX_AMMO = am;
-    ammo = MAX_AMMO;
-  }
-
-  abstract void shoot();
-}
-
-class AK47 extends RangedWeapon {
-
-  AK47(float x, float y, float z) {
-    super(x, y, z, 30);
-
-    model = new Model("models/weapons/ak47/ak47.obj", "models/weapons/ak47/ak47.jpg");
+    model = new Model("models/weapons/ak47/ak47.obj", "models/weapons/ak47/ak47.jpg", 0.2);
   }
 
   void run() {
-    if (mousePressed) {
+    if (mousePressed && timeout==0) {
       shoot();
+    }
+    if (timeout > 0) --timeout;
+    for (int i = 0; i < bullets.size(); ++i){
+      bullets.get(i).run();
+      if (bullets.get(i).life == 0) {
+        bullets.remove(i);
+        --i;
+      }
     }
   }
 
   void updatePos(Vector pos) {
-    //float[] dir = getAng(pos, player.cam.center);
-
     this.pos = pos.copy();//new Vector(pos.x+(PLAYER_WIDTH*0.6*sin(dir[0])), pos.y-10, pos.z+10/*+(PLAYER_DEPTH*0.6*cos(dir[0]))*/);
   }
 
   void display() {
-    float dir = player.cam.center.headingH();
-    model.display(pos, pos,/*0.2,*/ dir);
+    float dirX = player.cam.center.headingH();
+    float dirY = player.cam.center.headingV();
+    ((Model)model).display(pos, pos, dirX);
+    //new Vector(100, -50, 0)
+    for(Bullet b : bullets){
+      b.display();
+    }
+  }
+
+  String toString(){
+    String ret = "";
+    for(Bullet b : bullets){
+      ret += String.valueOf(b.pos);
+    }
+    return ret;
   }
 
   void shoot() {
-    if (ammo > 0) {
-      //println("*BANG*");
-      --ammo;
-    } else {
-      //println("*click*");
+    bullets.add(new Bullet(player.cam.eye, player.cam.center));
+    timeout = 60/FIRE_RATE;
+    println("BANG!");
+  }
+}
+
+class Bullet{
+
+  Vector pos, vel;
+  int life = 300;
+
+  Bullet(Vector _pos, Vector _vel){
+    vel = _vel.copy().setMag(20);
+    pos = _pos.copy();
+  }
+
+  void run(){
+    pos.add(vel);
+    --life;
+  }
+
+  void display(){
+    fill(255, 153, 40);
+    if(life < 298){
+      spheroid(pos, new Vector(1, 5, 5));
     }
   }
 }
 
-abstract class MeleeWeapon extends Weapon {
-  MeleeWeapon(float x, float y, float z) {
-    super(x, y, z);
-  }
+void spheroid(Vector pos, Vector size) {
+  pushMatrix();
+  translate(pos.x, pos.y, pos.z);
+  sphere(size.x);
+  popMatrix();
 }

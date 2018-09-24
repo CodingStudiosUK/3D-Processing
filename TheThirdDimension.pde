@@ -21,6 +21,7 @@ void setup() {
   player = new Player(0, -PLAYER_HEIGHT/2, 0, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_DEPTH); //Create the player
 
   physics.start(); //Start the physics thread
+  noCursor();
 }
 
 void draw() {

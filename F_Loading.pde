@@ -1,5 +1,5 @@
 color getJSONColor(JSONObject o) {
-  return color(o.getInt("r"), o.getInt("g"), o.getInt("b"));
+  return color(o.getInt("r"), o.getInt("g"), o.getInt("b"), 127);
 }
 
 float getX(JSONObject o) {

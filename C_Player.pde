@@ -14,7 +14,7 @@ class Player extends MasterEntity {
   //Stats
   float health = 100;
 
-  AK47 ak47;
+  Gun gun;
 
   Player(float x1, float y1, float z1, float x2, float y2, float z2) { //Size and position params
     super(x1, y1, z1, x2, y2, z2);
@@ -28,7 +28,7 @@ class Player extends MasterEntity {
     // hud.addItem("healthIcon", new HUDIcon(10, height-55, 50, 50, loadImage("health.jpg")));
     // hud.addItem("XHair", new HUDXhair(width/2, height/2, 50, 50, color(10, 255, 10)));
 
-    ak47 = new AK47(pos.x, pos.y, pos.z);
+    gun = new Gun(pos.x, pos.y, pos.z);
   }
 
   void move() { //Adds movement acceleration when the player presses a key
@@ -58,8 +58,6 @@ class Player extends MasterEntity {
       vel.x = velHor.x;
       vel.z = velHor.y;
     }
-
-
     ground = false;
     return;
   }
@@ -167,8 +165,9 @@ class Player extends MasterEntity {
       dir.x += (mouseX-width/2)*MOUSE_SENSITIVITY; //Makes the camera rotate, TODO: use constant for sensitivity
       dir.y += (mouseY-height/2)*MOUSE_SENSITIVITY;//*10/7;
       dir.y = constrain(dir.y, -89, 89);
+      robot.mouseMove(int(screenX+width/2.0), int(screenY+height/2.0));
     }
-    robot.mouseMove(int(screenX+width/2.0), int(screenY+height/2.0));
+
   }
 
   void run() { //Called evey frame
@@ -183,13 +182,13 @@ class Player extends MasterEntity {
     hud.updateItem("fps", nfc(frameRate, 2)); //Updates HUD elements TODO: find better way/move to function
     hud.updateItem("health-bar", health/100);
 
-    ak47.updatePos(pos);
-    ak47.run();
+    gun.updatePos(pos);
+    gun.run();
   }
 
   void display() { //Draws HUD and camera
     hud.display(); //MUST be before camera update
     cam.display(size);
-    ak47.display();
+    gun.display();
   }
 }
