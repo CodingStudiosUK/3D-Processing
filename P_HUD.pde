@@ -106,7 +106,7 @@ class HUDIcon extends HUDObject<PImage> { //For displaying icon images on the HU
 }
 
 class HUDText extends HUDObject<String> { //For displaying text to the HUD
-  String text;
+  String text = "";
   float size;
 
   HUDText(float x, float y, float s, color c) {

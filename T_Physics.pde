@@ -1,9 +1,7 @@
-
-
 class PhysicsThread extends Thread { //A custom thread class to easily multithread
   private Thread t;
   String name = "Physics";
-  final int TICKRATE = 30;
+  final int TICKRATE = 120;
 
   PhysicsThread() {
   }

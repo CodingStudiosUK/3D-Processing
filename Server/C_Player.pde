@@ -3,7 +3,7 @@ class Player{
   PVector center;
   color col;
   String id;
-  ArrayList<PVector> bullets = new ArrayList<PVector>();
+  boolean bullet = false;
 
   Player(String d){
     pos = new PVector();
@@ -13,12 +13,13 @@ class Player{
   }
 
   void update(String d){
-    String[] sections = d.split("\\]\\[");
+    String[] sections = d.split("\\]");
     pos = fromStr(sections[0]);
     center = fromStr(sections[1]);
-    bullets = new ArrayList<PVector>();
-    for(int i = 2; i < sections.length; i++){
-      bullets.add(fromStr(sections[i]));
+    try{
+      bullet = sections[2].equals("1")?true:false;
+    }catch(IndexOutOfBoundsException e){
+
     }
   }
 
@@ -35,11 +36,7 @@ class Player{
   }
 
   String asString(){
-    String b = "";
-    for(int i = 0; i < bullets.size(); i++){
-      b += bullets.get(i).toString();
-    }
-    return String.valueOf(pos)+String.valueOf(center)+b;
+    return String.valueOf(pos)+String.valueOf(center)+(bullet?"1":"0")+"]";
   }
 
   void display(){
@@ -47,9 +44,5 @@ class Player{
     noStroke();
     ellipse(map(pos.x, -1000, 1000, 0, width), map(pos.z, -1000, 1000, 0, height), 20, 20);
     stroke(255);
-    for(int i = 0; i < bullets.size(); i++){
-      PVector b = bullets.get(i);
-      ellipse(map(b.x, -1000, 1000, 0, width), map(b.z, -1000, 1000, 0, height), 5, 5);
-    }
   }
 }

@@ -30,7 +30,7 @@ void initNet() { //Configures UDP stuff (and more in the future)
 }
 
 void setLights() {
-  background(200, 200, 255); //Lighting and graphics stuff
+  background(100); //Lighting and graphics stuff
   //spotLight(255, 255, 255, -100, -800, -100, 1, 1, 1, 120, 500);
   //directionalLight(255, 255, 255, 1, 1, 2);
   ambientLight(255, 255, 255, 0, 0, 0);

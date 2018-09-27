@@ -29,6 +29,15 @@ abstract class MasterObject {
 
   abstract void collide(MasterObject mo);
 
+  boolean collide(Vector v){
+    if (v.x > getLeft() && v.x < getRight() //Other object is above
+      && v.z < getBack() && v.z > getFront()
+      && v.y > getTop() && v.y < getBottom()) {
+      return true;
+    }
+    return false;
+  }
+
   float getLeft() {
     return pos.x-size.x/2;
   }
@@ -55,9 +64,9 @@ abstract class MasterObject {
       && mo.getRight() > getLeft() && mo.getLeft() < getRight() //Other object is above
       && mo.getFront() < getBack() && mo.getBack() > getFront()
       && mo.getBottom() > getTop() && mo.getTop() < getBottom()) {
-      if (mo.pos.y < getTop()) {
+      if (mo.getBottom() > getTop() && mo.getBottom()-40 < getTop()) {
         return TOUCH_TOP;
-      } else if (mo.pos.y > getBottom()+mo.size.y/2) {
+      } else if (mo.getTop() < getBottom() && mo.getTop()+30 > getBottom()) {
         return TOUCH_BOTTOM;
       } else {
         float angO = atan2(mo.pos.z-pos.z, mo.pos.x-pos.x);
@@ -96,6 +105,7 @@ abstract class MasterEntity extends MasterObject {
 
   Vector vel, dir;
   boolean ground = true;
+  boolean alive = true;
 
 
   MasterEntity(float x1, float y1, float z1, float x2, float y2, float z2) {
@@ -106,8 +116,22 @@ abstract class MasterEntity extends MasterObject {
   }
 
   void collide(MasterObject mo) {
-    if (isTouching(mo) > -1) {
-      //--player.health; etc
-    }
+    if (mo != null && mo != this
+      && mo.getRight() > getLeft() && mo.getLeft() < getRight() //Other object is above
+      && mo.getFront() < getBack() && mo.getBack() > getFront()
+      && mo.getBottom() > getTop() && mo.getTop() < getBottom()) {
+        alive = false;
+        if(mo instanceof Player){
+          ((Player)mo).health -= 2;
+        }
+      }
+
+    /*if (mo != null && mo != this){}
+      && mo.getRight() > getLeft() && mo.getLeft() < getRight() //Other object is above
+      && mo.getFront() < getBack() && mo.getBack() > getFront()
+      && mo.getBottom() > getTop() && mo.getTop() < getBottom()) {
+        println("----DEAD----");
+        alive = false;
+    }*/
   }
 }

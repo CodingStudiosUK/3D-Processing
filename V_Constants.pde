@@ -1,4 +1,4 @@
-final boolean FULLSCREEN = true;
+
 final int PLAYER_WIDTH = 30;
 final int PLAYER_DEPTH = 30;
 final int PLAYER_HEIGHT = 110;
@@ -18,10 +18,10 @@ final color DEFAULT_STROKE = color(255);
 
 
 final int PLAYER_VELOCITY_TERMINAL = 25;
-final float MOUSE_SENSITIVITY = 0.1;
+final float MOUSE_SENSITIVITY = 0.2;
 
-final String SERVER_IP = "10.56.99.71";
+final String SERVER_IP = "10.56.99.105";
 final int SEND_PORT = 2323;
 final int REC_PORT = 2324;
 
-final Vector GRAVITY = new Vector(0, 1); //ACCELERATION due to gravity
+final Vector GRAVITY = new Vector(0, 0.1); //ACCELERATION due to gravity

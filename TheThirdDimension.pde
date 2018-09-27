@@ -2,6 +2,8 @@ import java.awt.*;
 import java.awt.AWTException;
 import hypermedia.net.*;
 
+final boolean FULLSCREEN = true;
+
 void settings() {
   if (FULLSCREEN) {
     fullScreen(P3D);
@@ -13,7 +15,7 @@ void settings() {
 }
 
 void setup() {
-  frameRate(120);
+  frameRate(60);
   config();
   initNet();
   map = new MapStorage();
@@ -36,4 +38,5 @@ void draw() {
   }
 
   player.display(); //Draws the hud and moves the camera.
+
 }

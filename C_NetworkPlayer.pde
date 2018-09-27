@@ -1,24 +1,24 @@
 class PlayerOther extends Player { //Class for other players on the server
 
-  //Model model;
   Cuboid cuboid = new Cuboid(color(0, 0, 200, 100));
   Vector center = new Vector(0, 0, 0);
-  ArrayList<Vector> bullets = new ArrayList<Vector>();
+  boolean bullet = false;
 
   PlayerOther(String d) {
     super(0, 0, 0, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_DEPTH);
     updatePos(d);
-    shape = new Model("models/ct/COUNTER-TERRORIST_GIGN.obj", "models/ct/GIGN_DMBASE2.png");
-    //model = new Model("models/coco/Coco.obj","models/coco/Coco.png");
+    //shape = new Model("models/ct/COUNTER-TERRORIST_GIGN.obj", "models/ct/GIGN_DMBASE2.png");
+    shape = new Model("models/player/coco/Coco.obj","models/player/coco/Coco.png");
   }
               /*Position, direction and bullets*/
   void updatePos(String d){
-    String[] sections = d.split("\\]\\[");
+    String[] sections = d.split("\\]");
+    //println(sections);
     pos = fromStr(sections[0]);
     center = fromStr(sections[1]);
-    bullets = new ArrayList<Vector>();
-    for(int i = 2; i < sections.length; i++){
-      bullets.add(fromStr(sections[i]));
+    try{
+      bullet = sections[2].equals("1")?true:false;
+    }catch(IndexOutOfBoundsException e){
     }
   }
 
@@ -64,12 +64,5 @@ class PlayerOther extends Player { //Class for other players on the server
     cuboid.display(pos, size, 0);
     Vector modelPos = new Vector(pos.x, getBottom(), pos.z);
     shape.display(modelPos, size, center.headingH());
-
-    //Draw bullet
-    println(bullets.size());
-    fill(255, 153, 40);
-    for(int i = 0; i < bullets.size(); i++){
-      spheroid(bullets.get(i), new Vector(1, 5, 5));
-    }
   }
 }

@@ -1,10 +1,10 @@
 class Player extends MasterEntity {
 
-  final float JUMP_VEL = 12;
+  final float JUMP_VEL = 4;
 
-  final float MAX_SPEED = 15;//TODO:temp
-  final float ACC = 1.6;
-  final float INITIAL_SPEED = 0.0;
+  final float MAX_SPEED = 5;//TODO:temp
+  final float ACC = 0.4;
+  final float INITIAL_SPEED = 0.1;
 
   Camera cam;
   color col;
@@ -13,6 +13,7 @@ class Player extends MasterEntity {
 
   //Stats
   float health = 100;
+  int deaths = 0;
 
   Gun gun;
 
@@ -150,6 +151,19 @@ class Player extends MasterEntity {
       vel.set(0, vel.y, 0);
     }
     pos.add(vel); //Add velocity to position
+
+    move(); //All the movement stuff
+
+    send(this);
+    //sendNEW(pos);
+    hud.updateItem("fps", nfc(frameRate, 2)); //Updates HUD elements TODO: find better way/move to function
+    hud.updateItem("health-bar", health/100);
+    //if(gun.bullets.size() > 0){
+
+    //}
+    gun.run();
+    gun.updatePos(pos);
+    collide();
   }
 
   void mouseCheck() {
@@ -175,15 +189,40 @@ class Player extends MasterEntity {
 
     cam.changeDir(dir.x, dir.y); //changes the camera direction
 
-    move(); //All the movement stuff
+    if(health <= 0){
+      deaths++;
+      health = 100;
+      pos.set(0, -100, 0);
+    }
 
-    send(this);
-    //sendNEW(pos);
-    hud.updateItem("fps", nfc(frameRate, 2)); //Updates HUD elements TODO: find better way/move to function
-    hud.updateItem("health-bar", health/100);
+  }
 
-    gun.updatePos(pos);
-    gun.run();
+  void collide(){
+    try{
+      for(String k : players.keySet()){
+        if(players.get(k).bullet){
+          hit(players.get(k).pos, players.get(k).center.normalise());
+        }
+      }
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+  }
+
+  boolean hit(Vector pos, Vector dir){
+    for (int i = 1; i < 4096; i++){
+      for(int j = 0; j < map.geometry.size(); j++){
+        if(map.geometry.get(j).collide(pos)){
+          return true;
+        }
+      }
+      if(this.collide(pos)){
+        health -= 5;
+        return true;
+      }
+      pos.add(dir);
+    }
+    return false;
   }
 
   void display() { //Draws HUD and camera

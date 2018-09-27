@@ -36,6 +36,9 @@ class Vector {
   Vector copy() {
     return new Vector(this.x, this.y, this.z);
   }
+  PVector toPV(){
+    return new PVector(this.x, this.y, this.z);
+  }
 
   Vector add(float x, float y, float z) {
     this.x += x;

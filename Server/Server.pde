@@ -11,6 +11,7 @@ void setup(){
   size(400, 400);
   udp = new UDP(this, PORT);
   udp.listen(true);
+  thread("netThread");
 }
 
 void draw(){
@@ -21,5 +22,13 @@ void draw(){
     //println(p.id);
     p.display();
   }
-  send();
+
+}
+int TICKRATE = 140;
+
+void netThread(){
+  while(true){
+    send();
+    delay(1000/TICKRATE);
+  }
 }
