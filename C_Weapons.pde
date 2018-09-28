@@ -49,7 +49,7 @@ class Gun{
 
   void shoot() {
     bullets.add(new Bullet(player.cam.eye, player.cam.center));
-    timeout = 60/FIRE_RATE;
+    timeout = 120/FIRE_RATE;
     shoot = true;
   }
 }

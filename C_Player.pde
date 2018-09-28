@@ -11,6 +11,8 @@ class Player extends MasterEntity {
 
   HUD hud;
 
+  int id;
+
   //Stats
   float health = 100;
   int deaths = 0;
@@ -152,42 +154,48 @@ class Player extends MasterEntity {
     }
     pos.add(vel); //Add velocity to position
 
-    move(); //All the movement stuff
 
-    send(this);
     //sendNEW(pos);
-    hud.updateItem("fps", nfc(frameRate, 2)); //Updates HUD elements TODO: find better way/move to function
-    hud.updateItem("health-bar", health/100);
+
     //if(gun.bullets.size() > 0){
 
     //}
     gun.run();
-    gun.updatePos(pos);
+
     collide();
+  }
+
+  void movement(){ //Called by movment thread, for user input related movement
+    mouseCheck();
+    move(); //All the movement stuff
+    gun.updatePos(pos);
   }
 
   void mouseCheck() {
     PointerInfo a = MouseInfo.getPointerInfo();
-    Point m = a.getLocation();
-    mx = (int)m.getX();
-    my = (int)m.getY();
-    if (!(abs(pmouseX-mouseX) == 0 && abs(pmouseY-mouseY) == 0)) {
-      screenX = mx-mouseX;
-      screenY = my-mouseY;
-    }
-    if (!keys.getKey("mouseLock")) { //If mouseLock is on
-      dir.x += (mouseX-width/2)*MOUSE_SENSITIVITY; //Makes the camera rotate, TODO: use constant for sensitivity
-      dir.y += (mouseY-height/2)*MOUSE_SENSITIVITY;//*10/7;
-      dir.y = constrain(dir.y, -89, 89);
-      robot.mouseMove(int(screenX+width/2.0), int(screenY+height/2.0));
-    }
+    mouse = a.getLocation();
+    if (!(abs(pmouse.x-mouseX) == 0 && abs(pmouse.y-mouseY) == 0)) {
+      screen.x = mouse.x-mouseX;
+      screen.y = mouse.y-mouseY;
+      println("MOUSE-------------: "+mouse.x+" : "+mouse.y);
 
-  }
-
-  void run() { //Called evey frame
-    mouseCheck();
+      if (!keys.getKey("mouseLock")) { //If mouseLock is on
+        dir.x += (mouse.x-(screen.x+width/2))*MOUSE_SENSITIVITY; //Makes the camera rotate, TODO: use constant for sensitivity
+        dir.y += (mouse.y-(screen.y+height/2))*MOUSE_SENSITIVITY;//*10/7;
+        dir.y = constrain(dir.y, -89, 89);
+        robot.mouseMove(screen.x+width/2, screen.y+height/2);
+      }
+    }
+    pmouse.x = mouse.x;
+    pmouse.y = mouse.x;
+    mouseX = screen.x+width/2; //Should prevent any glitches as mouseX is updated by processing at the beginning of every frame
+    mouseY = screen.y+height/2;
 
     cam.changeDir(dir.x, dir.y); //changes the camera direction
+  }
+
+  void run() { //Called by main thread evey frame
+
 
     if(health <= 0){
       deaths++;
@@ -195,11 +203,22 @@ class Player extends MasterEntity {
       pos.set(0, -100, 0);
     }
 
+    hud.updateItem("fps", nfc(frameRate, 2)); //Updates HUD elements TODO: find better way/move to function
+    hud.updateItem("health-bar", health/100);
+
+  }
+
+  void buffer(){
+    buffer.startObject(0, id);
+    buffer.addVal(pos);
+    buffer.addVal(cam.center);
+    buffer.addVal(gun.shoot);
+    buffer.endObject();
   }
 
   void collide(){
     try{
-      for(String k : players.keySet()){
+      for(Integer k : players.keySet()){
         if(players.get(k).bullet){
           hit(players.get(k).pos, players.get(k).center.normalise());
         }

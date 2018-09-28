@@ -3,7 +3,7 @@ class MapStorage {
 
 
   MapStorage() {
-    geometry = loadLevel("l1m0");
+    geometry = loadLevel("l0m0");
   }
 
   void render() {

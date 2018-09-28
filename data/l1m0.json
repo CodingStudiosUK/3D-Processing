@@ -1,128 +1,146 @@
 [
 {
-  "name": "Floor1",
-  "type": "Cuboid",
-  "color": {"r": 0, "g": 0, "b": 0},
-  "corners" : {
-    "one": {"x": -2048, "y": 0, "z": -2048},
-    "two": {"x": 2048, "y": 100, "z": 2048}
-  },
+	"name": "CanopyFloor",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 0, "b": 0},
+	"corners": {
+		"one": {"x": -1920, "y": -0, "z": 576},
+		"two": {"x": -576, "y": -100, "z": -768}
+	}
 },
 {
-  "name": "WallA",
-  "type": "Cuboid",
-  "color": {"r": 0, "g": 255, "b": 255},
-  "corners" : {
-    "one": {"x": -2048, "y": 0, "z": 2048},
-    "two": {"x": 1920, "y": -600, "z": 1920}
-  },
+	"name": "CourtyardFloor",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 0, "b": 0},
+	"corners": {
+		"one": {"x": -128, "y": -0, "z": 512},
+		"two": {"x": 1920, "y": -100, "z": -1920}
+	}
 },
 {
-  "name": "WallB",
-  "type": "Cuboid",
-  "color": {"r": 0, "g": 255, "b": 255},
-  "corners" : {
-    "one": {"z": 1920, "y": 0, "x": 2048},
-    "two": {"z": 2048, "y": -600, "x": -1920}
-  },
+	"name": "CanopyPath",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 0, "b": 0},
+	"corners": {
+		"one": {"x": -768, "y": -0, "z": 1600},
+		"two": {"x": -576, "y": -100, "z": 576}
+	}
 },
 {
-  "name": "WallC",
-  "type": "Cuboid",
-  "color": {"r": 0, "g": 255, "b": 255},
-  "corners" : {
-    "one": {"x": -1920, "y": 0, "z": -1920},
-    "two": {"x": 2048, "y": -600, "z": -2048}
-  },
+	"name": "MidPath",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 0, "b": 0},
+	"corners": {
+		"one": {"x": -576, "y": -0, "z": 1600},
+		"two": {"x": -64, "y": -100, "z": 1408}
+	}
 },
 {
-  "name": "WallD",
-  "type": "Cuboid",
-  "color": {"r": 0, "g": 255, "b": 255},
-  "corners" : {
-    "one": {"z": -2048, "y": 0, "x": 1920},
-    "two": {"z": -1920, "y": -600, "x": -2048}
-  },
+	"name": "CourtyardPath",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 0, "b": 0},
+	"corners": {
+		"one": {"x": -64, "y": -0, "z": 1600},
+		"two": {"x": 128, "y": -100, "z": 512}
+	}
 },
 {
-  "name": "Pillar",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 200, "y": -800, "z": 200},
-    "two": {"x": 300, "y": 0, "z": 300}
-  },
-  "texture" : "brick.png"
-},
-
-{
-  "name": "Pillar Stair 1",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 200, "y": -50, "z": 300},
-    "two": {"x": 150, "y": -100, "z": 200}
-  },
-  "texture" : "brick.png"
+	"name": "CanopyStairs1",
+	"type": "Cuboid",
+	"color": {"r": 128, "g": 128, "b": 0},
+	"corners": {
+		"one": {"x": -1856, "y": -0, "z": 576},
+		"two": {"x": -832, "y": -125, "z": 640}
+	}
 },
 {
-  "name": "Pillar Stair 2",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 200, "y": -150, "z": 300},
-    "two": {"x": 300, "y": -200, "z": 350}
-  },
-  "texture" : "brick.png"
+	"name": "CanopyStairs2",
+	"type": "Cuboid",
+	"color": {"r": 128, "g": 128, "b": 0},
+	"corners": {
+		"one": {"x": -1856, "y": -0, "z": 640},
+		"two": {"x": -832, "y": -150, "z": 704}
+	}
 },
 {
-  "name": "Pillar Stair 3",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 300, "y": -250, "z": 200},
-    "two": {"x": 350, "y": -300, "z": 300}
-  },
-  "texture" : "brick.png"
+	"name": "CanopyStairs3",
+	"type": "Cuboid",
+	"color": {"r": 128, "g": 128, "b": 0},
+	"corners": {
+		"one": {"x": -1856, "y": -0, "z": 704},
+		"two": {"x": -832, "y": -175, "z": 768}
+	}
 },
 {
-  "name": "Pillar Stair 4",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 200, "y": -350, "z": 150},
-    "two": {"x": 300, "y": -400, "z": 200}
-  },
-  "texture" : "brick.png"
+	"name": "CanopyStairs4",
+	"type": "Cuboid",
+	"color": {"r": 128, "g": 128, "b": 0},
+	"corners": {
+		"one": {"x": -1856, "y": -0, "z": 768},
+		"two": {"x": -832, "y": -200, "z": 832}
+	}
 },
 {
-  "name": "Pillar Stair 5",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 150, "y": -450, "z": 200},
-    "two": {"x": 200, "y": -500, "z": 300}
-  },
-  "texture" : "brick.png"
+	"name": "CanopyUpper",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 255, "b": 0},
+	"corners": {
+		"one": {"x": -1920, "y": -0, "z": 1920},
+		"two": {"x": -768, "y": -225, "z": 832}
+	}
 },
 {
-  "name": "Pillar Stair 6",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 200, "y": -550, "z": 300},
-    "two": {"x": 300, "y": -600, "z": 350}
-  },
-  "texture" : "brick.png"
+	"name": "PathUpper",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 255, "b": 0},
+	"corners": {
+		"one": {"x": -768, "y": -0, "z": 1920},
+		"two": {"x": 128, "y": -225, "z": 1600}
+	}
 },
 {
-  "name": "Pillar Stair 7",
-  "type": "Cuboid",
-  "color": {"r": 10, "g": 150, "b": 200},
-  "corners" : {
-    "one": {"x": 300, "y": -650, "z": 200},
-    "two": {"x": 350, "y": -700, "z": 300}
-  },
-  "texture" : "brick.png"
+	"name": "CourtyardStairs",
+	"type": "Cuboid",
+	"color": {"r": 128, "g": 128, "b": 0},
+	"corners": {
+		"one": {"x": -128, "y": -0, "z": -192},
+		"two": {"x": 1920, "y": -150, "z": -320}
+	}
+},
+{
+	"name": "CourtyardUpper1",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 255, "b": 0},
+	"corners": {
+		"one": {"x": -128, "y": -0, "z": -320},
+		"two": {"x": 1920, "y": -100, "z": -1088}
+	}
+},
+{
+	"name": "CourtyardUpper2",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 255, "b": 0},
+	"corners": {
+		"one": {"x": 1024, "y": -0, "z": -192},
+		"two": {"x": 1472, "y": -400, "z": -320}
+	}
+},
+{
+	"name": "CourtyardUpper3",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 255, "b": 0},
+	"corners": {
+		"one": {"x": -128, "y": -0, "z": -1088},
+		"two": {"x": 320, "y": -400, "z": -1216}
+	}
+},
+{
+	"name": "CourtyardUpper4",
+	"type": "Cuboid",
+	"color": {"r": 255, "g": 255, "b": 0},
+	"corners": {
+		"one": {"x": 768, "y": -0, "z": -1088},
+		"two": {"x": 1920, "y": -400, "z": -1216}
+	}
 },
 ]

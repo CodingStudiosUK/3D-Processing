@@ -20,19 +20,19 @@ void send(Player p) {
 
 void receive(byte[] _data, String ip, int port) {
   // [pos][center][bullet][bullet]...ip@
-  String message = new String(_data);
-  String[] others = message.split("@");
-  serverFrames = int(others[others.length-1]);
-  for (int i = 0; i < others.length-1; i++) { //The last elem is used for server sync data
-    if (others[i].contains("you")) continue;
-    String[] t = others[i].split("\\]");
-    String playerIP = t[t.length-1];
-    others[i] = others[i].substring(0, others[i].lastIndexOf("]")+1);
-    if (players.containsKey(playerIP)) {
-      players.get(playerIP).updatePos(others[i]);
-    } else {
-      players.put(playerIP, new PlayerOther(others[i]));
-    }
-  }
+  // String message = new String(_data);
+  // String[] others = message.split("@");
+  // serverFrames = int(others[others.length-1]);
+  // for (int i = 0; i < others.length-1; i++) { //The last elem is used for server sync data
+  //   if (others[i].contains("you")) continue;
+  //   String[] t = others[i].split("\\]");
+  //   String playerIP = t[t.length-1];
+  //   others[i] = others[i].substring(0, others[i].lastIndexOf("]")+1);
+  //   if (players.containsKey(playerIP)) {
+  //     players.get(playerIP).updatePos(others[i]);
+  //   } else {
+  //     players.put(playerIP, new PlayerOther(others[i]));
+  //   }
+  // }
   //DECODE positions
 }

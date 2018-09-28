@@ -7,7 +7,7 @@
 
 public class Buffer{
 
-  final int PORT = 2324;
+  final int PORT = 2323;
 
   UDP udp;
   String buffer = "";
@@ -17,7 +17,7 @@ public class Buffer{
     udp.listen(true);
   }
 
-  void addVal(PVector pv){
+  void addVal(Vector pv){
     buffer += pv.x+","+pv.y+","+pv.z+"]";
   }
 
@@ -62,11 +62,8 @@ public class Buffer{
   }
 
   void flush(){ //Sends data to clients
-    //println("SERVER: sending"+buffer);
-    println("SERVER: "+buffer);
-    for(String k : players.keySet()){
-      udp.send(buffer.replace(str(players.get(k).id), "y"+str(players.get(k).id)), k, 2323); //Send the data to each client, filtering out their own data
-    }
+    println("CLIENT TX: "+buffer);
+    udp.send(buffer, SERVER_IP, 2324); //Send the data to each client, filtering out their own data
     buffer = ""; //Gotta reset the buffer after each flush....
   }
 /*Example data:
@@ -81,29 +78,40 @@ public class Buffer{
 
   void receive(byte[] _data, String ip, int port){
     String data = new String(_data);
-
+    println("CLIENT REC: "+data);
     String[] items = data.split("}");
     for(String item : items){
       String[] props = item.substring(item.indexOf("#")+1, item.length()).split("]");
-      if(players.containsKey(ip)){
-        players.get(ip).update(getVector(props[0]), getVector(props[1]), getBool(props[2]));
+      String ids = getNetItemID(item);
+      int id;
+      if(ids.contains("y")){
+        player.id = int(ids.substring(1, ids.length()));
+        continue;
+      }else{
+        id = int(ids);
+      }
+      if(players.containsKey(id)){
+        players.get(id).update(getVector(props[0]), getVector(props[1]), getBool(props[2]));
       }
       else{ //New client connected
-        players.put(ip, new Player(getVector(props[0]), getVector(props[1]), getBool(props[2]), newClientID()));
+        players.put(id, new PlayerOther(getVector(props[0]), getVector(props[1]), getBool(props[2]), id));
       }
     }
   }
 
-  int getNetItemID(String item){
-    return int(item.substring(0, item.indexOf(","))); //Hardcoded = bad, use properties or JSON spec.
+  String getNetItemID(String item){
+    // id="you" returns 0
+    println("ITEM: "+item);
+    return item.substring(0, item.indexOf(",")); //Hardcoded = bad, use properties or JSON spec.
   }
 
-  PVector getVector(String prop){
+  Vector getVector(String prop){
     String[] elems = prop.split(",");
-    return new PVector(float(elems[0]),float(elems[1]),float(elems[2]));
+    return new Vector(float(elems[0]),float(elems[1]),float(elems[2]));
   }
 
   boolean getBool(String prop){
+    println(prop);
     return prop.equals("1");
   }
 
@@ -116,7 +124,7 @@ public class Buffer{
   }
 
   boolean validID(int id) {
-    for (Player c : players.values()) {
+    for (PlayerOther c : players.values()) {
       if (id == c.id) {
         return false;
       }
