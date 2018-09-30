@@ -36,7 +36,7 @@ class Player extends MasterEntity {
   }
 
   void move() { //Adds movement acceleration when the player presses a key
-    cam.moveTo(pos.copy());
+    
     if (keys.getKey("up")) {
       ground = false;
       vel.y = -JUMP_VEL;
@@ -55,11 +55,11 @@ class Player extends MasterEntity {
       move = (360+move)%360;
       if(getXZ(vel).mag() <= 0){
         Vector t = new Vector(move).setMag(INITIAL_SPEED);
-        vel.add(t.x, vel.y, t.y);
+        vel.add(t.x, 0, t.y);
       }
 
       Vector moveAccel = new Vector(move).setMag(
-        map(getXZ(vel).mag(), 0, MAX_SPEED*3, 0, ACC));
+        map(getXZ(vel).mag(), 0, MAX_SPEED, 0.01, ACC));
 
       vel.add(moveAccel.x, 0, moveAccel.y);
       Vector velHor = new Vector(vel.x, vel.z);
@@ -68,7 +68,8 @@ class Player extends MasterEntity {
       vel.z = velHor.y;
     }
     ground = false;
-    return;
+    cam.moveTo(pos.copy());
+    gun.updatePos(pos);
   }
 
   boolean isMoving() { //If any key is pressed, used for decceleration
@@ -173,12 +174,6 @@ class Player extends MasterEntity {
     gun.run();
 
     collide();
-  }
-
-  void movement(){ //Called by movment thread, for user input related movement
-    mouseCheck();
-    move(); //All the movement stuff
-    gun.updatePos(pos);
   }
 
   void mouseCheck() {

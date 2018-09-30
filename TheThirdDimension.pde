@@ -3,6 +3,7 @@ import java.awt.AWTException;
 import hypermedia.net.*;
 
 final boolean FULLSCREEN = true;
+final float MOUSE_SENSITIVITY = 0.3;
 
 final int PLAYER_WIDTH = 30;
 final int PLAYER_DEPTH = 30;
@@ -23,7 +24,7 @@ final color DEFAULT_STROKE = color(255);
 
 
 final int PLAYER_VELOCITY_TERMINAL = 25;
-final float MOUSE_SENSITIVITY = 0.2;
+
 
 final String SERVER_IP = "10.56.99.105";
 final int SEND_PORT = 2323;
@@ -56,12 +57,12 @@ void settings() {
   } else {
     size(1400, 600, P3D);
   }
-  smooth(2);
-
+  smooth(8);
+  
 }
 
 void setup() {
-  frameRate(60);
+  frameRate(900);
   config();
   buffer = new Buffer();
   map = new MapStorage();

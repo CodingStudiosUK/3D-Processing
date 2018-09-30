@@ -28,7 +28,7 @@ class Gun{
   }
 
   void updatePos(Vector pos) {
-    this.pos = pos.copy();//new Vector(pos.x+(PLAYER_WIDTH*0.6*sin(dir[0])), pos.y-10, pos.z+10/*+(PLAYER_DEPTH*0.6*cos(dir[0]))*/);
+    this.pos = pos.copy().set(pos.x, pos.y-PLAYER_HEIGHT*0.13, pos.z);//new Vector(pos.x+(PLAYER_WIDTH*0.6*sin(dir[0])), pos.y-10, pos.z+10/*+(PLAYER_DEPTH*0.6*cos(dir[0]))*/);
   }
 
   void display() {
