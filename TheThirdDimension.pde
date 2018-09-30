@@ -71,7 +71,7 @@ void setup() {
   player = new Player(0, -PLAYER_HEIGHT/2, 0, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_DEPTH); //Create the player
 
   th.start(); //Start the thread handler
-  //noCursor();
+  noCursor();
 }
 
 void draw() {

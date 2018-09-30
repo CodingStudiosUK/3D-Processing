@@ -2,6 +2,10 @@ String readable(Vector p) {
   return round(p.x)+" . "+round(p.y)+" . "+round(p.z);
 }
 
+Vector getXZ(Vector v){
+  return new Vector(v.x, v.z);
+}
+
 void startDrawHud() { //Sets of camera/lighting for HUD
   camera();
   noLights();

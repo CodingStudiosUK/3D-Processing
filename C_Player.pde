@@ -1,10 +1,10 @@
 class Player extends MasterEntity {
 
-  final float JUMP_VEL = 4;
+  final float JUMP_VEL = 5;
 
-  final float MAX_SPEED = 5;//TODO:temp
-  final float ACC = 0.4;
-  final float INITIAL_SPEED = 0.1;
+  final float MAX_SPEED = 4;//TODO:temp
+  final float ACC = 1;
+  final float INITIAL_SPEED = 0.05;
 
   Camera cam;
   color col;
@@ -52,8 +52,13 @@ class Player extends MasterEntity {
     if (moveDir != -23) { //-23 means no keys are being pressed
       float move = cam.center.headingH()+moveDir;
       move = (360+move)%360;
+      if(getXZ(vel).mag() <= 0){
+        Vector t = new Vector(move).setMag(INITIAL_SPEED);
+        vel.add(t.x, vel.y, t.y);
+      }
 
-      Vector moveAccel = new Vector(move).setMag(ACC);
+      Vector moveAccel = new Vector(move).setMag(
+        map(getXZ(vel).mag(), 0, MAX_SPEED*3, 0, ACC));
 
       vel.add(moveAccel.x, 0, moveAccel.y);
       Vector velHor = new Vector(vel.x, vel.z);
@@ -118,12 +123,14 @@ class Player extends MasterEntity {
     case TOUCH_BOTTOM:
       if (vel.y <= 0) {
         pos.y = mo.getBottom()+size.y/2;
+        vel.y = 0;
       }
       break;
     case TOUCH_TOP:
       if (vel.y >= 0) {
         pos.y = mo.getTop()-size.y/2;
         ground = true;
+        vel.y = 0;
       }
       break;
     case TOUCH_BACK:
@@ -150,7 +157,9 @@ class Player extends MasterEntity {
       vel.y = constrain(vel.y, -MAX_INT, PLAYER_VELOCITY_TERMINAL); //Stop the player accelerating constantly
     }
     if (!isMoving()) { //If not moving, deccelerate TODO: implement this mathematically
-      vel.set(0, vel.y, 0);
+      Vector vh = getXZ(vel).setMag(ACC*2);
+      vh.mult(map(sqrt(getXZ(vel).mag()), 0, sq(MAX_SPEED), 0, 2));
+      vel.sub(vh.x, 0, vh.y);
     }
     pos.add(vel); //Add velocity to position
 
@@ -203,7 +212,7 @@ class Player extends MasterEntity {
       pos.set(0, -100, 0);
     }
 
-    hud.updateItem("fps", nfc(frameRate, 2)); //Updates HUD elements TODO: find better way/move to function
+    hud.updateItem("fps", nfc(frameRate, 2)+"\n"+pos.toString()); //Updates HUD elements TODO: find better way/move to function
     hud.updateItem("health-bar", health/100);
 
   }
