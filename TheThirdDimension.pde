@@ -6,7 +6,7 @@ final boolean FULLSCREEN = true;
 
 final int PLAYER_WIDTH = 30;
 final int PLAYER_DEPTH = 30;
-final int PLAYER_HEIGHT = 110;
+final int PLAYER_HEIGHT = 320;
 final int PLAYER_EYE_OFFSET = 6; //Arbitrary values.
 
 final float CAM_RADIUS = 1000; // How far away the camera center is.
@@ -68,13 +68,15 @@ void setup() {
   keys = loadKeys();
   models = loadModels("models/modelList");
 
-  player = new Player(0, -PLAYER_HEIGHT/2, 0, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_DEPTH); //Create the player
+  player = new Player(0, -PLAYER_HEIGHT/2, 0, PLAYER_WIDTH, PLAYER_HEIGHT/2, PLAYER_DEPTH); //Create the player
 
   th.start(); //Start the thread handler
-  noCursor();
+  //noCursor();
 }
 
 void draw() {
+  mouseX = mouse.x-screen.x;
+  mouseY = mouse.y-screen.y;
   player.run(); //Do Player interaction
 
   setLights();

@@ -23,6 +23,7 @@ class Player extends MasterEntity {
     super(x1, y1, z1, x2, y2, z2);
     vel = new Vector(0, 0, 0); //Init player specific Vectors
     dir = new Vector(0, 90);
+    pos.y -= 50;
 
     cam = new Camera(dir, pos); //Create camera and HUD
     hud = new HUD("hud");
