@@ -20,7 +20,7 @@ void draw(){
   }
 
 }
-int TICKRATE = 30;
+int TICKRATE = 60;
 
 void netThread(){
   while(true){

@@ -15,9 +15,9 @@ class PhysThread extends MasterThread { //A custom thread class to easily multit
 class CamThread extends MasterThread {
 
   CamThread(String n){
-    TICKRATE = 600;
+    TICKRATE = 900;
     name = n;
-    noDelay = true; //The thread will run as fast as is possible
+    //noDelay = true; //The thread will run as fast as is possible
   }
 
   void runLoop(){
@@ -27,7 +27,7 @@ class CamThread extends MasterThread {
 
 class NetThread extends MasterThread { //Buffers and sends the network packets, 64 tick
   NetThread(String n){
-    TICKRATE = 64;
+    TICKRATE = 30;
     name = n;
   }
 
@@ -36,14 +36,15 @@ class NetThread extends MasterThread { //Buffers and sends the network packets, 
     buffer.flush();
   }
 }
+  //if (FULLSCREEN) {
 
 class MoveThread extends MasterThread {
-  
+
   MoveThread(String n){
-    TICKRATE = 300;
+    TICKRATE = 100;
     name = n;
   }
-  
+
   void runLoop(){
     player.move();
   }

@@ -3,11 +3,10 @@ import java.awt.AWTException;
 import hypermedia.net.*;
 
 final boolean FULLSCREEN = true;
-final float MOUSE_SENSITIVITY = 0.3;
 
-final int PLAYER_WIDTH = 30;
-final int PLAYER_DEPTH = 30;
-final int PLAYER_HEIGHT = 320;
+final int PLAYER_WIDTH = 40;
+final int PLAYER_DEPTH = 40;
+final int PLAYER_HEIGHT = 180;
 final int PLAYER_EYE_OFFSET = 6; //Arbitrary values.
 
 final float CAM_RADIUS = 1000; // How far away the camera center is.
@@ -24,7 +23,7 @@ final color DEFAULT_STROKE = color(255);
 
 
 final int PLAYER_VELOCITY_TERMINAL = 25;
-
+final float MOUSE_SENSITIVITY = 0.2;
 
 final String SERVER_IP = "10.56.99.105";
 final int SEND_PORT = 2323;
@@ -57,20 +56,21 @@ void settings() {
   } else {
     size(1400, 600, P3D);
   }
-  smooth(8);
-  
+  smooth(2);
+
 }
 
 void setup() {
-  frameRate(900);
+  frameRate(60);
   config();
-  buffer = new Buffer();
+
   map = new MapStorage();
   keys = loadKeys();
   models = loadModels("models/modelList");
 
-  player = new Player(0, -PLAYER_HEIGHT/2, 0, PLAYER_WIDTH, PLAYER_HEIGHT/2, PLAYER_DEPTH); //Create the player
+  player = new Player(0, -PLAYER_HEIGHT, 0, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_DEPTH); //Create the player
 
+  buffer = new Buffer();
   th.start(); //Start the thread handler
   //noCursor();
 }

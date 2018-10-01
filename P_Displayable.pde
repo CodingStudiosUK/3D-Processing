@@ -100,8 +100,9 @@ class Cuboid implements Displayable {
   color col = DEFAULT_COLOR;
   color stroke = DEFAULT_STROKE;
 
-  Cuboid(color _col){
+  Cuboid(color _col, color _stroke){
     col = _col;
+    stroke = _stroke;
   }
 
   void display(Vector pos, Vector size, float ang){
@@ -109,8 +110,7 @@ class Cuboid implements Displayable {
     display2(pos, size);
   }
   void display2(Vector pos, Vector size) {
-    fill(col);
-    stroke(stroke);
+
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
     box(size.x, size.y, size.z);

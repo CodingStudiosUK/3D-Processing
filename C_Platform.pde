@@ -2,7 +2,7 @@ class Platform extends MasterGeometry {
 
   Platform(float x1, float y1, float z1, float x2, float y2, float z2, color col) {
     super(x1, y1, z1, x2, y2, z2);
-    shape = new Cuboid(col);
+    shape = new Cuboid(col, color(255, 255));
   }
 
   void run() { //For moving platforms and such, done in physics thread
@@ -10,6 +10,8 @@ class Platform extends MasterGeometry {
 
   void display() {
     strokeWeight(1);
+    fill(((Cuboid)shape).col);
+    stroke(((Cuboid)shape).stroke);
     shape.display(pos, size, 0);
   }
 }

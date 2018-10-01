@@ -3,7 +3,7 @@ class Player extends MasterEntity {
   final float JUMP_VEL = 5;
 
   final float MAX_SPEED = 4;//TODO:temp
-  final float ACC = 1;
+  final float ACC = 3;
   final float INITIAL_SPEED = 0.05;
 
   Camera cam;
@@ -36,7 +36,7 @@ class Player extends MasterEntity {
   }
 
   void move() { //Adds movement acceleration when the player presses a key
-    
+
     if (keys.getKey("up")) {
       ground = false;
       vel.y = -JUMP_VEL;
@@ -59,7 +59,7 @@ class Player extends MasterEntity {
       }
 
       Vector moveAccel = new Vector(move).setMag(
-        map(getXZ(vel).mag(), 0, MAX_SPEED, 0.01, ACC));
+        map(getXZ(vel).mag(), 0, MAX_SPEED, 0.03, ACC));
 
       vel.add(moveAccel.x, 0, moveAccel.y);
       Vector velHor = new Vector(vel.x, vel.z);
@@ -182,7 +182,6 @@ class Player extends MasterEntity {
     if (!(abs(pmouse.x-mouseX) == 0 && abs(pmouse.y-mouseY) == 0)) {
       screen.x = mouse.x-mouseX;
       screen.y = mouse.y-mouseY;
-      println("MOUSE-------------: "+mouse.x+" : "+mouse.y);
 
       if (!keys.getKey("mouseLock")) { //If mouseLock is on
         dir.x += (mouse.x-(screen.x+width/2))*MOUSE_SENSITIVITY; //Makes the camera rotate, TODO: use constant for sensitivity
@@ -205,10 +204,10 @@ class Player extends MasterEntity {
     if(health <= 0){
       deaths++;
       health = 100;
-      pos.set(0, -100, 0);
+      pos.set(0, -300, 0);
     }
 
-    hud.updateItem("fps", nfc(frameRate, 2)+"\n"+pos.toString()); //Updates HUD elements TODO: find better way/move to function
+    hud.updateItem("fps", nfc(frameRate, 2)+"\n"+buffer.buffer); //Updates HUD elements TODO: find better way/move to function
     hud.updateItem("health-bar", health/100);
 
   }
@@ -218,6 +217,7 @@ class Player extends MasterEntity {
     buffer.addVal(pos);
     buffer.addVal(cam.center);
     buffer.addVal(gun.shoot);
+    gun.shoot = false;
     buffer.endObject();
   }
 
@@ -225,7 +225,7 @@ class Player extends MasterEntity {
     try{
       for(Integer k : players.keySet()){
         if(players.get(k).bullet){
-          hit(players.get(k).pos, players.get(k).center.normalise());
+          hit(players.get(k).pos.copy(), players.get(k).center.copy().normalise());
         }
       }
     }catch(Exception e){
@@ -233,18 +233,18 @@ class Player extends MasterEntity {
     }
   }
 
-  boolean hit(Vector pos, Vector dir){
+  boolean hit(Vector bpos, Vector dir){
     for (int i = 1; i < 4096; i++){
       for(int j = 0; j < map.geometry.size(); j++){
-        if(map.geometry.get(j).collide(pos)){
+        if(map.geometry.get(j).collide(bpos)){
           return true;
         }
       }
-      if(this.collide(pos)){
+      if(this.collide(bpos)){
         health -= 5;
         return true;
       }
-      pos.add(dir);
+      bpos.add(dir);
     }
     return false;
   }
