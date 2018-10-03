@@ -1,6 +1,6 @@
 final int FIRE_RATE = 6;
 
-class Gun{
+class Gun {
   Displayable model;
   Vector pos;
   ArrayList<Bullet> bullets = new ArrayList<Bullet>();
@@ -18,7 +18,7 @@ class Gun{
       shoot();
     }
     if (timeout > 0) --timeout;
-    for (int i = 0; i < bullets.size(); ++i){
+    for (int i = 0; i < bullets.size(); ++i) {
       bullets.get(i).run();
       if (!bullets.get(i).alive) {
         bullets.remove(i);
@@ -36,12 +36,12 @@ class Gun{
     float dirY = player.cam.center.headingV();
     ((Model)model).display(pos, pos, dirX);
     //new Vector(100, -50, 0)
-    for(int i = 0; i < bullets.size(); i++){
+    for (int i = 0; i < bullets.size(); i++) {
       bullets.get(i).display();
     }
   }
 
-  String toString(){
+  String toString() {
     String ret = shoot?"1]":"0]";
     shoot = false;
     return ret;
@@ -56,25 +56,25 @@ class Gun{
 
 final int MAX_DIST = 1000; //units
 
-class Bullet extends MasterEntity{
+class Bullet extends MasterEntity {
   int life = 0;
 
-  Bullet(Vector _pos, Vector _vel){
+  Bullet(Vector _pos, Vector _vel) {
     super(0, 0, 0, 0, 0, 0, 0);
     vel = _vel.copy().setMag(50);
     pos = _pos.copy();
     size = new Vector(4, 4, 4);
   }
 
-  void run(){
+  void run() {
     pos.add(vel);
     life += vel.mag();
-    if(life >= MAX_DIST){
+    if (life >= MAX_DIST) {
       alive = false;
     }
   }
 
-  void display(){
+  void display() {
     fill(255, 153, 40);
     noStroke();
     spheroid(pos, new Vector(PVector.mult(size.toPV(), 0.5)));

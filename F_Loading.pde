@@ -34,20 +34,20 @@ HashMap<String, HUDObject> loadHUD(String filename) {
     switch(obj.getString("type")) {
     case "text":
       fill = col.getJSONObject("fill");
-      e = new HUDText(getX(pos), getY(pos), obj.getInt("size"),
+      e = new HUDText(getX(pos), getY(pos), obj.getInt("size"), 
         getJSONColor(fill));
       break;
     case "bar":
       fill = col.getJSONObject("fill");
       stroke = col.getJSONObject("stroke");
       size = obj.getJSONObject("size");
-      e = new HUDBar(getX(pos), getY(pos), getX(size), getY(size),
+      e = new HUDBar(getX(pos), getY(pos), getX(size), getY(size), 
         getJSONColor(fill), getJSONColor(stroke));
       break;
     case "xhair": //TODO: Use a seperate config file for crosshair
       stroke = col.getJSONObject("stroke");
       size = obj.getJSONObject("size");
-      e = new HUDXhair(getX(pos), getY(pos), getX(size), getY(size),
+      e = new HUDXhair(getX(pos), getY(pos), getX(size), getY(size), 
         getJSONColor(stroke));
       break;
     case "icon":
@@ -79,10 +79,10 @@ ArrayList<MasterObject> loadLevel(String filename) {
     Platform c;
     if (obj.getString("type").equals("CuboidMoving")) {
       JSONObject dist = obj.getJSONObject("distance");
-      c = new PlatformMoving(one.getInt("x"), one.getInt("y"), one.getInt("z"), two.getInt("x"), two.getInt("y"), two.getInt("z"),
-        dist.getInt("x"), dist.getInt("y"), dist.getInt("z"),col);
+      c = new PlatformMoving(one.getInt("x"), one.getInt("y"), one.getInt("z"), two.getInt("x"), two.getInt("y"), two.getInt("z"), 
+        dist.getInt("x"), dist.getInt("y"), dist.getInt("z"), col);
     } else {
-      c = new Platform(one.getInt("x"), one.getInt("y"), one.getInt("z"), two.getInt("x"), two.getInt("y"), two.getInt("z"),col);
+      c = new Platform(one.getInt("x"), one.getInt("y"), one.getInt("z"), two.getInt("x"), two.getInt("y"), two.getInt("z"), col);
     }
     al.add(c);
   }
@@ -98,8 +98,8 @@ HashMap<String, Model> loadModels(String filename) {
     for (int i = 0; i < rotA.size(); i++) {
       rot[i] = float((int)rotA.get(i));
     }
-    Model m = new Model(obj.getString("obj path"),
-      rot[0], rot[1], rot[2],
+    Model m = new Model(obj.getString("obj path"), 
+      rot[0], rot[1], rot[2], 
       obj.getFloat("scale factor"));
     if (!obj.getBoolean("use mtl")) {
       m.useTexture(obj.getString("image path"));
@@ -116,10 +116,10 @@ InputStorage loadKeys() { //Adds all the keys
     char keyChar = obj.getString("key").charAt(0);
     switch(obj.getString("type")) {
     case "hold":
-      keys.addHold(alias,keyChar);
+      keys.addHold(alias, keyChar);
       break;
     case "press":
-      keys.addPress(alias,keyChar);
+      keys.addPress(alias, keyChar);
       break;
     default:
       println(alias);

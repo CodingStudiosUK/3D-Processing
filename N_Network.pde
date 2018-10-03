@@ -8,7 +8,7 @@ void send(Player p) {
 /*void sendNEW(Vector p) {
  int[] pos = {(int)p.x, (int)p.y, (int)p.z};
  byte[] outputBytes = new byte[pos.length * 4];
-
+ 
  for(int i = 0, k = 0; i < pos.length; i++) {
  int integerTemp = pos[i];
  for(int j = 0; j < 4; j++, k++) {

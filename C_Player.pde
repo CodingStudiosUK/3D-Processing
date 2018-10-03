@@ -36,14 +36,16 @@ class Player extends MasterEntity {
   }
 
   void move() { //Adds movement acceleration when the player presses a key
+    if (MOONJUMP) {
+      if (keys.getKey("up")) {
+        ground = false;
+        vel.y = -JUMP_VEL;
+      }
+      if (keys.getKey("down")) {
+        vel.y = JUMP_VEL;
+      }
+    }
 
-    if (keys.getKey("up")) {
-      ground = false;
-      vel.y = -JUMP_VEL;
-    }
-    if (keys.getKey("down")) {
-      vel.y = JUMP_VEL;
-    }
     if (keys.getKey("jump") && ground == true) {
       vel.y -= JUMP_VEL;//jumpSpeed = JUMP_VEL;
       ground = false;
@@ -53,7 +55,7 @@ class Player extends MasterEntity {
     if (moveDir != -23) { //-23 means no keys are being pressed
       float move = cam.center.headingH()+moveDir;
       move = (360+move)%360;
-      if(getXZ(vel).mag() <= 0){
+      if (getXZ(vel).mag() <= 0) {
         Vector t = new Vector(move).setMag(INITIAL_SPEED);
         vel.add(t.x, 0, t.y);
       }
@@ -165,6 +167,10 @@ class Player extends MasterEntity {
     }
     pos.add(vel); //Add velocity to position
 
+    // OOB
+    if (abs(player.pos.x) > 2048) player.pos.x = constrain(player.pos.x, -2048, 2048);
+    if (abs(player.pos.y) > 1000) player.pos.y = constrain(player.pos.y, -1000, 1000);
+    if (abs(player.pos.z) > 2048) player.pos.z = constrain(player.pos.z, -2048, 2048);
 
     //sendNEW(pos);
 
@@ -201,18 +207,17 @@ class Player extends MasterEntity {
   void run() { //Called by main thread evey frame
 
 
-    if(health <= 0){
+    if (health <= 0) {
       deaths++;
       health = 100;
       pos.set(0, -300, 0);
     }
 
-    hud.updateItem("fps", nfc(frameRate, 2)+"\n"+buffer.buffer); //Updates HUD elements TODO: find better way/move to function
+    hud.updateItem("fps", nfc(frameRate, 2)); //Updates HUD elements TODO: find better way/move to function
     hud.updateItem("health-bar", health/100);
-
   }
 
-  void buffer(){
+  void buffer() {
     buffer.startObject(0, id);
     buffer.addVal(pos);
     buffer.addVal(cam.center);
@@ -221,26 +226,27 @@ class Player extends MasterEntity {
     buffer.endObject();
   }
 
-  void collide(){
-    try{
-      for(Integer k : players.keySet()){
-        if(players.get(k).bullet){
+  void collide() {
+    try {
+      for (Integer k : players.keySet()) {
+        if (players.get(k).bullet) {
           hit(players.get(k).pos.copy(), players.get(k).center.copy().normalise());
         }
       }
-    }catch(Exception e){
+    }
+    catch(Exception e) {
       e.printStackTrace();
     }
   }
 
-  boolean hit(Vector bpos, Vector dir){
-    for (int i = 1; i < 4096; i++){
-      for(int j = 0; j < map.geometry.size(); j++){
-        if(map.geometry.get(j).collide(bpos)){
+  boolean hit(Vector bpos, Vector dir) {
+    for (int i = 1; i < 4096; i++) {
+      for (int j = 0; j < map.geometry.size(); j++) {
+        if (map.geometry.get(j).collide(bpos)) {
           return true;
         }
       }
-      if(this.collide(bpos)){
+      if (this.collide(bpos)) {
         health -= 5;
         return true;
       }

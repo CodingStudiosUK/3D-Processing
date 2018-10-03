@@ -36,7 +36,7 @@ class Vector {
   Vector copy() {
     return new Vector(this.x, this.y, this.z);
   }
-  PVector toPV(){
+  PVector toPV() {
     return new PVector(this.x, this.y, this.z);
   }
 
@@ -127,7 +127,7 @@ class Vector {
    float rotateV(float ang){
    ang = radians(ang);
    float h = new Vector(this.x, this.y).mag();
-
+   
    }*/
 
   Vector rotateX(float ang) {
@@ -168,11 +168,10 @@ class Vector {
     return this;
   }
 
-  Vector lerp(Vector v, float amt){
+  Vector lerp(Vector v, float amt) {
     this.x = PApplet.lerp(this.x, v.x, amt);
     this.y = PApplet.lerp(this.y, v.y, amt);
     this.z = PApplet.lerp(this.z, v.z, amt);
     return this;
   }
-
 }

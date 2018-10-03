@@ -10,10 +10,10 @@ class PlayerOther extends Player { //Class for other players on the server
     update(pos, center, bullet);
     this.id = id;
     //shape = new Model("models/ct/COUNTER-TERRORIST_GIGN.obj", "models/ct/GIGN_DMBASE2.png");
-    shape = new Model("models/player/coco/Coco.obj","models/player/coco/Coco.png", 1.5);
+    shape = new Model("models/player/coco/Coco.obj", "models/player/coco/Coco.png", 1.5);
   }
-              /*Position, direction and bullets*/
-  void update(Vector pos, Vector center, boolean bullet){
+  /*Position, direction and bullets*/
+  void update(Vector pos, Vector center, boolean bullet) {
     this.pos = pos;
     this.center = center;
     this.bullet = bullet;

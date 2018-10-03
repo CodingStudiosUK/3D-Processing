@@ -3,6 +3,7 @@ import java.awt.AWTException;
 import hypermedia.net.*;
 
 final boolean FULLSCREEN = true;
+final boolean MOONJUMP = false;
 
 final int PLAYER_WIDTH = 40;
 final int PLAYER_DEPTH = 40;
@@ -11,12 +12,12 @@ final int PLAYER_EYE_OFFSET = 6; //Arbitrary values.
 
 final float CAM_RADIUS = 1000; // How far away the camera center is.
 
-final int TOUCH_NOT = -1,
-  TOUCH_LEFT = 0,
-  TOUCH_RIGHT = 1,
-  TOUCH_FRONT = 2,
-  TOUCH_BACK = 3,
-  TOUCH_TOP = 4,
+final int TOUCH_NOT = -1, 
+  TOUCH_LEFT = 0, 
+  TOUCH_RIGHT = 1, 
+  TOUCH_FRONT = 2, 
+  TOUCH_BACK = 3, 
+  TOUCH_TOP = 4, 
   TOUCH_BOTTOM = 5;
 final color DEFAULT_COLOR = color(255, 2);
 final color DEFAULT_STROKE = color(255);
@@ -25,7 +26,7 @@ final color DEFAULT_STROKE = color(255);
 final int PLAYER_VELOCITY_TERMINAL = 25;
 final float MOUSE_SENSITIVITY = 0.2;
 
-final String SERVER_IP = "10.56.99.105";
+final String SERVER_IP = "10.56.100.151";
 final int SEND_PORT = 2323;
 final int REC_PORT = 2324;
 
@@ -57,7 +58,6 @@ void settings() {
     size(1400, 600, P3D);
   }
   smooth(2);
-
 }
 
 void setup() {
@@ -72,7 +72,7 @@ void setup() {
 
   buffer = new Buffer();
   th.start(); //Start the thread handler
-  //noCursor();
+  noCursor();
 }
 
 void draw() {
@@ -87,5 +87,4 @@ void draw() {
   }
 
   player.display(); //Draws the hud and moves the camera.
-
 }

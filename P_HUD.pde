@@ -19,7 +19,6 @@ class HUD {
     for (HUDObject ho : items.values()) {
       ho.display();
     }
-    text(players.size(), 10, 50);
     //Draw hud elements as 2D canvas
     endDrawHud();
   }

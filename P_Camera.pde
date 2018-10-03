@@ -8,7 +8,7 @@ class Camera { //The camera class, makes it easy to control a camera using direc
   Camera(Vector dir, Vector pos) {
     changeDir(dir.x, dir.y);
     eye = pos.copy();
-    size = new Vector(0,0,0);
+    size = new Vector(0, 0, 0);
   }
 
   void changeDir(float angRight, float angDown) { //Takes two angles and calculates a position for the camera

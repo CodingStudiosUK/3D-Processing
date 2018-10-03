@@ -62,7 +62,7 @@ class Model implements Displayable {
     quad.endShape();
   }
 
-  void display(Vector pos, Vector size, float ang){
+  void display(Vector pos, Vector size, float ang) {
     fill(255);
     pushMatrix();
     translate(pos.x, pos.y, pos.z);
@@ -100,12 +100,12 @@ class Cuboid implements Displayable {
   color col = DEFAULT_COLOR;
   color stroke = DEFAULT_STROKE;
 
-  Cuboid(color _col, color _stroke){
+  Cuboid(color _col, color _stroke) {
     col = _col;
     stroke = _stroke;
   }
 
-  void display(Vector pos, Vector size, float ang){
+  void display(Vector pos, Vector size, float ang) {
     // discard ang
     display2(pos, size);
   }

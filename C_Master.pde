@@ -29,7 +29,7 @@ abstract class MasterObject {
 
   abstract void collide(MasterObject mo);
 
-  boolean collide(Vector v){
+  boolean collide(Vector v) {
     if (v.x > getLeft() && v.x < getRight() //Other object is above
       && v.z < getBack() && v.z > getFront()
       && v.y > getTop() && v.y < getBottom()) {
@@ -120,18 +120,18 @@ abstract class MasterEntity extends MasterObject {
       && mo.getRight() > getLeft() && mo.getLeft() < getRight() //Other object is above
       && mo.getFront() < getBack() && mo.getBack() > getFront()
       && mo.getBottom() > getTop() && mo.getTop() < getBottom()) {
-        alive = false;
-        if(mo instanceof Player){
-          ((Player)mo).health -= 2;
-        }
+      alive = false;
+      if (mo instanceof Player) {
+        ((Player)mo).health -= 2;
       }
+    }
 
     /*if (mo != null && mo != this){}
-      && mo.getRight() > getLeft() && mo.getLeft() < getRight() //Other object is above
-      && mo.getFront() < getBack() && mo.getBack() > getFront()
-      && mo.getBottom() > getTop() && mo.getTop() < getBottom()) {
-        println("----DEAD----");
-        alive = false;
-    }*/
+     && mo.getRight() > getLeft() && mo.getLeft() < getRight() //Other object is above
+     && mo.getFront() < getBack() && mo.getBack() > getFront()
+     && mo.getBottom() > getTop() && mo.getTop() < getBottom()) {
+     println("----DEAD----");
+     alive = false;
+     }*/
   }
 }

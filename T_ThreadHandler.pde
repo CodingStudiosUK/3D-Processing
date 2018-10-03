@@ -1,7 +1,7 @@
-class ThreadHandler{
+class ThreadHandler {
   HashMap<String, MasterThread> threads = new HashMap<String, MasterThread>();
 
-  ThreadHandler(){
+  ThreadHandler() {
     threads.put("physics", new PhysThread("Physics"));
     threads.put("camera", new CamThread("Camera"));
     threads.put("network", new NetThread("Network"));
@@ -14,8 +14,8 @@ class ThreadHandler{
   //   }
   // }
 
-  void start(){
-    for(MasterThread mt : threads.values()){ //Starts all the threads
+  void start() {
+    for (MasterThread mt : threads.values()) { //Starts all the threads
       mt.create();
     }
   }
