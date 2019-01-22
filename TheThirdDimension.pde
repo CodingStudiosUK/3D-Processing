@@ -26,9 +26,9 @@ final color DEFAULT_STROKE = color(255);
 final int PLAYER_VELOCITY_TERMINAL = 25;
 final float MOUSE_SENSITIVITY = 0.2;
 
-final String SERVER_IP = "10.56.100.151";
-final int SEND_PORT = 2323;
-final int REC_PORT = 2324;
+String SERVER_IP = "10.56.100.151"; // line 2
+int CLIENT_PORT = 2323; // line 1
+int SERVER_PORT = 2324; // line 3
 
 final Vector GRAVITY = new Vector(0, 0.1); //ACCELERATION due to gravity
 
@@ -62,6 +62,7 @@ void settings() {
 
 void setup() {
   frameRate(60);
+  loadIP();
   config();
 
   map = new MapStorage();
@@ -72,7 +73,6 @@ void setup() {
 
   buffer = new Buffer();
   th.start(); //Start the thread handler
-  noCursor();
 }
 
 void draw() {

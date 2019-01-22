@@ -28,14 +28,13 @@ class Gun {
   }
 
   void updatePos(Vector pos) {
-    this.pos = pos.copy().set(pos.x, pos.y-PLAYER_HEIGHT*0.13, pos.z);//new Vector(pos.x+(PLAYER_WIDTH*0.6*sin(dir[0])), pos.y-10, pos.z+10/*+(PLAYER_DEPTH*0.6*cos(dir[0]))*/);
+    this.pos = pos.copy().set(pos.x, pos.y-PLAYER_HEIGHT*0.13, pos.z);
   }
 
   void display() {
     float dirX = player.cam.center.headingH();
     float dirY = player.cam.center.headingV();
     ((Model)model).display(pos, pos, dirX);
-    //new Vector(100, -50, 0)
     for (int i = 0; i < bullets.size(); i++) {
       bullets.get(i).display();
     }

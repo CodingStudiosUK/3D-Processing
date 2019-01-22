@@ -8,12 +8,6 @@ class ThreadHandler {
     threads.put("movement", new MoveThread("Movement"));
   }
 
-  // void stopAll(){
-  //   for(MasterThread mt : threads.values()){
-  //     mt.stop = true;
-  //   }
-  // }
-
   void start() {
     for (MasterThread mt : threads.values()) { //Starts all the threads
       mt.create();

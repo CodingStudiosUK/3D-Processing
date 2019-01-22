@@ -44,7 +44,7 @@ HashMap<String, HUDObject> loadHUD(String filename) {
       e = new HUDBar(getX(pos), getY(pos), getX(size), getY(size), 
         getJSONColor(fill), getJSONColor(stroke));
       break;
-    case "xhair": //TODO: Use a seperate config file for crosshair
+    case "xhair":
       stroke = col.getJSONObject("stroke");
       size = obj.getJSONObject("size");
       e = new HUDXhair(getX(pos), getY(pos), getX(size), getY(size), 
@@ -56,7 +56,7 @@ HashMap<String, HUDObject> loadHUD(String filename) {
       e = new HUDIcon(getX(pos), getY(pos), getX(size), getY(size), loadImage(file));
       break;
     default:
-      println("Invalid HUD item: "+obj.getString("type"));
+      //println("Invalid HUD item: "+obj.getString("type"));
       continue;
     }
     elems.put(id, e);
@@ -69,8 +69,6 @@ ArrayList<MasterObject> loadLevel(String filename) {
   JSONArray arr = loadJSONArray(filename+".json");
   for (int i = 0; i < arr.size(); ++i) {
     JSONObject obj = arr.getJSONObject(i);
-    /* TODO:
-     Each type of object should be created by a different function.*/
     JSONObject corners = obj.getJSONObject("corners");
     JSONObject one = corners.getJSONObject("one");
     JSONObject two = corners.getJSONObject("two");
@@ -122,7 +120,7 @@ InputStorage loadKeys() { //Adds all the keys
       keys.addPress(alias, keyChar);
       break;
     default:
-      println(alias);
+      //println(alias);
       break;
     }
   }

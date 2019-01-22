@@ -4,16 +4,20 @@
  - ENTITY (interactables)
  - META (metadata)
  */
+ 
+void loadIP() {
+  String[] s = loadStrings("data/ipConf.txt");
+  CLIENT_PORT = int(s[0]);
+  SERVER_PORT = int(s[2]);
+}
 
 public class Buffer {
-
-  final int PORT = 2324;
 
   UDP udp;
   String buffer = "";
 
   Buffer() {
-    udp = new UDP(this, PORT);
+    udp = new UDP(this, SERVER_PORT);
     udp.listen(true);
   }
 
@@ -62,10 +66,9 @@ public class Buffer {
   }
 
   void flush() { //Sends data to clients
-    //println("SERVER: sending"+buffer);
-    println("SERVER: "+buffer);
+    //println("SERVER: "+buffer);
     for (String k : players.keySet()) {
-      udp.send(buffer.replace(str(players.get(k).id), "y"+str(players.get(k).id)), k, 2323); //Send the data to each client, filtering out their own data
+      udp.send(buffer.replace(str(players.get(k).id), "y"+str(players.get(k).id)), k, CLIENT_PORT); //Send the data to each client, filtering out their own data
     }
     buffer = ""; //Gotta reset the buffer after each flush....
   }
@@ -122,29 +125,4 @@ public class Buffer {
     }
     return true;
   }
-}
-
-void send() {
-  /*String data = "";
-   for (Player p : players.values()) {
-   data += p.asString()+p.id+"@";
-   }
-   if (data.length() > 2) {
-   data = data.substring(0, data.length()-1);
-   }
-   data += "@"+frameCount;
-   //println(data);
-   for (String ip : players.keySet()) {
-   udp.send(data.replace(ip, "you"), ip, 2324);
-   }*/
-}
-
-void receive( byte[] _data, String ip, int port ) {
-  /*String data = new String(_data);
-   if (players.containsKey(ip)) {
-   players.get(ip).update(data);
-   } else {
-   players.put(ip, new Player(data));
-   players.get(ip).id = ip;
-   }*/
 }

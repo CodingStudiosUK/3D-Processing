@@ -2,7 +2,7 @@ class Player extends MasterEntity {
 
   final float JUMP_VEL = 5;
 
-  final float MAX_SPEED = 4;//TODO:temp
+  final float MAX_SPEED = 4;
   final float ACC = 3;
   final float INITIAL_SPEED = 0.05;
 
@@ -27,10 +27,6 @@ class Player extends MasterEntity {
 
     cam = new Camera(dir, pos); //Create camera and HUD
     hud = new HUD("hud");
-    // hud.addItem("fps", new HUDText(0, 0, 22, color(255))); //Adds HUD element, move to config file
-    // hud.addItem("health", new HUDBar(65, height-55, 300, 50, color(200), color(0, 0, 255)));
-    // hud.addItem("healthIcon", new HUDIcon(10, height-55, 50, 50, loadImage("health.jpg")));
-    // hud.addItem("XHair", new HUDXhair(width/2, height/2, 50, 50, color(10, 255, 10)));
 
     gun = new Gun(pos.x, pos.y, pos.z);
   }
@@ -47,7 +43,7 @@ class Player extends MasterEntity {
     }
 
     if (keys.getKey("jump") && ground == true) {
-      vel.y -= JUMP_VEL;//jumpSpeed = JUMP_VEL;
+      vel.y -= JUMP_VEL;
       ground = false;
     }
 
@@ -160,7 +156,7 @@ class Player extends MasterEntity {
       vel.add(GRAVITY);
       vel.y = constrain(vel.y, -MAX_INT, PLAYER_VELOCITY_TERMINAL); //Stop the player accelerating constantly
     }
-    if (!isMoving()) { //If not moving, deccelerate TODO: implement this mathematically
+    if (!isMoving()) { //If not moving, deccelerate
       Vector vh = getXZ(vel).setMag(ACC*2);
       vh.mult(map(sqrt(getXZ(vel).mag()), 0, sq(MAX_SPEED), 0, 2));
       vel.sub(vh.x, 0, vh.y);
@@ -172,11 +168,6 @@ class Player extends MasterEntity {
     if (abs(player.pos.y) > 1000) player.pos.y = constrain(player.pos.y, -1000, 1000);
     if (abs(player.pos.z) > 2048) player.pos.z = constrain(player.pos.z, -2048, 2048);
 
-    //sendNEW(pos);
-
-    //if(gun.bullets.size() > 0){
-
-    //}
     gun.run();
 
     collide();
@@ -190,7 +181,7 @@ class Player extends MasterEntity {
       screen.y = mouse.y-mouseY;
 
       if (!keys.getKey("mouseLock")) { //If mouseLock is on
-        dir.x += (mouse.x-(screen.x+width/2))*MOUSE_SENSITIVITY; //Makes the camera rotate, TODO: use constant for sensitivity
+        dir.x += (mouse.x-(screen.x+width/2))*MOUSE_SENSITIVITY; //Makes the camera rotate
         dir.y += (mouse.y-(screen.y+height/2))*MOUSE_SENSITIVITY;//*10/7;
         dir.y = constrain(dir.y, -89, 89);
         robot.mouseMove(screen.x+width/2, screen.y+height/2);
@@ -213,7 +204,7 @@ class Player extends MasterEntity {
       pos.set(0, -300, 0);
     }
 
-    hud.updateItem("fps", nfc(frameRate, 2)); //Updates HUD elements TODO: find better way/move to function
+    hud.updateItem("fps", nfc(frameRate, 2)); //Updates HUD elements
     hud.updateItem("health-bar", health/100);
   }
 

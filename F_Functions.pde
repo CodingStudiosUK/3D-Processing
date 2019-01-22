@@ -24,14 +24,7 @@ void config() { //Sets of parameters before the program starts running
   catch (AWTException e) {
     e.printStackTrace();
   }
-  //noCursor(); //Hide the mouse cursor
-}
-
-void initNet() { //Configures UDP stuff (and more in the future)
-  buffer = new Buffer();
-  // udp = new UDP(this, REC_PORT);
-  // udp.log(false);
-  // udp.listen(true);
+  noCursor(); //Hide the mouse cursor
 }
 
 void setLights() {

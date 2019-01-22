@@ -35,7 +35,6 @@ class NetThread extends MasterThread { //Buffers and sends the network packets, 
     buffer.flush();
   }
 }
-//if (FULLSCREEN) {
 
 class MoveThread extends MasterThread {
 

@@ -117,19 +117,6 @@ class Vector {
     return headingV();
   }
 
-  /*Vector rotateH(float ang){
-   ang = radians(ang);
-   float temp = this.x;
-   this.x = this.x*cos(ang) - this.z*sin(ang);
-   this.z = temp*sin(ang) + this.z*cos(ang);
-   return this;
-   }
-   float rotateV(float ang){
-   ang = radians(ang);
-   float h = new Vector(this.x, this.y).mag();
-   
-   }*/
-
   Vector rotateX(float ang) {
     ang = radians(ang);
     float y = this.y, z = this.z;

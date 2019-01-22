@@ -125,13 +125,5 @@ abstract class MasterEntity extends MasterObject {
         ((Player)mo).health -= 2;
       }
     }
-
-    /*if (mo != null && mo != this){}
-     && mo.getRight() > getLeft() && mo.getLeft() < getRight() //Other object is above
-     && mo.getFront() < getBack() && mo.getBack() > getFront()
-     && mo.getBottom() > getTop() && mo.getTop() < getBottom()) {
-     println("----DEAD----");
-     alive = false;
-     }*/
   }
 }

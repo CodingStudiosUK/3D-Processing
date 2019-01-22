@@ -3,10 +3,14 @@ import java.util.Arrays;
 
 Buffer buffer;
 
+int CLIENT_PORT = 2323; // line 1
+int SERVER_PORT = 2324; // line 3
+
 HashMap<String, Player> players = new HashMap<String, Player>();
 
 void setup() {
   size(400, 400);
+  loadIP();
   buffer = new Buffer();
   thread("netThread");
 }

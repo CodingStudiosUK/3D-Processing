@@ -19,7 +19,7 @@ class PlayerOther extends Player { //Class for other players on the server
     this.bullet = bullet;
   }
 
-  void display() { //Draws the other players TODO: Give each player a colour and nametag
+  void display() { //Draws the other players
     noFill();
     stroke(0, 0, 200, 100);
     cuboid.display(pos, size, 0);

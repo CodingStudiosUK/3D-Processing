@@ -4,16 +4,21 @@
  - ENTITY (interactables)
  - META (metadata)
  */
+ 
+void loadIP() {
+  String[] s = loadStrings("data/ipConf.txt");
+  SERVER_IP = s[1];
+  CLIENT_PORT = int(s[0]);
+  SERVER_PORT = int(s[2]);
+}
 
 public class Buffer {
-
-  final int PORT = 2323;
 
   UDP udp;
   String buffer = "";
 
   Buffer() {
-    udp = new UDP(this, PORT);
+    udp = new UDP(this, CLIENT_PORT);
     udp.listen(true);
   }
 
@@ -62,8 +67,8 @@ public class Buffer {
   }
 
   void flush() { //Sends data to clients
-    println("CLIENT TX: "+buffer);
-    udp.send(buffer, SERVER_IP, 2324); //Send the data to each client, filtering out their own data
+    //println("CLIENT TX: "+buffer);
+    udp.send(buffer, SERVER_IP, SERVER_PORT); //Send the data to each client, filtering out their own data
     buffer = ""; //Gotta reset the buffer after each flush....
   }
   /*Example data:
@@ -78,7 +83,7 @@ public class Buffer {
 
   void receive(byte[] _data, String ip, int port) {
     String data = new String(_data);
-    println("CLIENT REC: "+data);
+    //println("CLIENT REC: "+data);
     String[] items = data.split("}");
     for (String item : items) {
       String[] props = item.substring(item.indexOf("#")+1, item.length()).split("]");
@@ -100,7 +105,7 @@ public class Buffer {
 
   String getNetItemID(String item) {
     // id="you" returns 0
-    println("ITEM: "+item);
+    //println("ITEM: "+item);
     return item.substring(0, item.indexOf(",")); //Hardcoded = bad, use properties or JSON spec.
   }
 
@@ -110,7 +115,7 @@ public class Buffer {
   }
 
   boolean getBool(String prop) {
-    println(prop);
+    //println(prop);
     return prop.equals("1");
   }
 

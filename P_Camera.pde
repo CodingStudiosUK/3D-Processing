@@ -1,6 +1,5 @@
 class Camera { //The camera class, makes it easy to control a camera using direction
 
-
   Vector center;
   Vector eye;
   Vector size;

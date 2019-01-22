@@ -5,7 +5,7 @@ class Model implements Displayable {
   float scale;
 
   Model(String objName, float rotX, float rotY, float rotZ, float scale) {
-    println(rotX, rotY, rotZ, scale);
+    //println(rotX, rotY, rotZ, scale);
     obj = loadShape(objName);
   }
 
